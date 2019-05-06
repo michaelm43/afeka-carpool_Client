@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.annotation.PostConstruct;
@@ -28,15 +29,10 @@ import org.springframework.web.client.RestTemplate;
 import smartspace.dao.EnhancedElementDao;
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.ElementEntity;
-import smartspace.data.Location;
-import smartspace.data.MessageEntity;
-import smartspace.data.SeverityEnum;
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
-import smartspace.infra.*;
 import smartspace.layout.ElementBoundary;
 import smartspace.layout.LocationForBoundary;
-import smartspace.layout.MessageBoundary;
 import smartspace.layout.UserForBoundary;
 
 
@@ -49,7 +45,7 @@ public class ElementControllerIntegrationTest {
 	private RestTemplate restTemplate;
 	private EnhancedElementDao<String> elementDao;
 	private EnhancedUserDao<String> userDao;
-	private ElementsService elementService;
+	private ElementService elementService;
 	
 	@Value("${smartspace.name}")
 	private String appSmartSpace;
@@ -57,7 +53,7 @@ public class ElementControllerIntegrationTest {
 	
 	
 	@Autowired
-	public void setElementService(ElementsService elementService) {
+	public void setElementService(ElementService elementService) {
 		this.elementService = elementService;
 	}
 	
@@ -78,7 +74,7 @@ public class ElementControllerIntegrationTest {
 	}
 	
 	@Before
-	public void inti() {
+	public void initAdmin() {
 		this.userDao
 			.create(new UserEntity("appSmartSpace",adminEmail,"admin","adminAvatar",UserRole.ADMIN,0));
 	}
@@ -102,10 +98,11 @@ public class ElementControllerIntegrationTest {
 		UserForBoundary creator = new UserForBoundary();
 		creator.setSmartspace("MySmartSpace");
 		creator.setEmail("admin@admin");
-		ElementBoundary newElement = new ElementBoundary();
 		Map<String,Object> elementProperties = new HashMap<String, Object>();
 		elementProperties.put("x", 10);
 		elementProperties.put("isTired", true);
+		
+		ElementBoundary newElement = new ElementBoundary();
 		
 		newElement.setName("Test");
 		newElement.setExpired(false);
@@ -154,7 +151,7 @@ public class ElementControllerIntegrationTest {
 		.forEach(i-> {			
 			newElement.setName("Test");
 			newElement.setExpired(false);
-			newElement.setLatlng(latlng);
+			newElement.setLatlnsg(latlng);
 			newElement.setCreator(creator);
 			newElement.setElementProperties(elementProperties);
 			newElement.setElementType("Test");
@@ -176,8 +173,9 @@ public class ElementControllerIntegrationTest {
 	
 
 	@Test(expected=Exception.class)
-	public void testPostNewMessageWithBadCode() throws Exception{
+	public void testPostNewElementWithNotAdmin() throws Exception{
 		// GIVEN the database is empty
+		//AND user data base has 1 use which is admin
 		
 		// WHEN I POST new message with bad code
 		Map<String,Double> latlng = new HashMap<>();
@@ -210,8 +208,9 @@ public class ElementControllerIntegrationTest {
 	
 	
 	@Test
-	public void testGetAllMessagesUsingPagination() throws Exception{
+	public void testGetAllElementsUsingPagination() throws Exception{
 		// GIVEN the database contains 5 elements
+		//AND user data base has 1 use which is admin
 		int size = 5;
 		IntStream.range(1, size + 1)
 		.mapToObj(i-> new ElementEntity())
@@ -231,5 +230,155 @@ public class ElementControllerIntegrationTest {
 	}
 	
 	@Test
+	public void testGetAllElementsUsingPaginationAndValidateContent() throws Exception{
+		// GIVEN the database contains 5 Elements
+		//AND user data base has 1 use which is admin
+		int size = 5;
+		java.util.List<ElementBoundary> allElements = 
+		IntStream.range(1, size + 1)
+			.mapToObj(i->new ElementEntity(null, "Test"+i , "type",
+					new Date(), true, appSmartSpace, adminEmail,
+					null))
+			.map(this.elementDao::create)
+			.map(ElementBoundary::new)
+			.collect(Collectors.toList());
+		
+		// WHEN I GET elements of size 10 and page 0
+		ElementBoundary[] response = 
+		this.restTemplate
+			.getForObject(
+					this.baseUrl + "/{adminSmartspace}/{adminEmail}" + "?size={size}&page={page}", 
+					ElementBoundary[].class, 
+					appSmartSpace,adminEmail,10, 0);
+		
+		// THEN I receive the exact 5 elements written to the database
+		assertThat(response)
+			.usingElementComparatorOnFields("key")
+			.containsExactlyElementsOf(allElements);
+	}
 	
+	@Test(expected=Exception.class)
+	public void testGetAllElementUsingPaginationWithNotAdmin() throws Exception{
+		// GIVEN the database contains 1 element
+		//AND user data base has 1 use which is admin
+		elementDao.create(new ElementEntity());
+		
+		// WHEN I GET messages of size 10 and page 0
+ 
+		this.restTemplate
+			.getForObject(
+					this.baseUrl + "/{adminSmartspace}/{adminEmail}" +"?size={size}&page={page}", 
+					ElementBoundary[].class,
+					"Not our smartspace","NotAdmin",10, 0);
+		
+		// THEN the test ends with exception
+	}
+	
+	@Test
+	public void testGetAllElementsUsingPaginationAndValidateContentWithAllAttributeValidation() throws Exception{
+		// GIVEN the database contains 5 elements
+		//AND user data base has 1 use which is admin
+		
+		int size = 5;
+		Map<String, Object> details = new HashMap<>();
+		details.put("y", 10.0);
+		details.put("x", "10");
+		
+		List<ElementEntity> allElements = new ArrayList<ElementEntity>(); 
+ 
+		for(int i=1; i<size+1;i++) {
+			ElementEntity newElement = new ElementEntity();
+			newElement.setName("Test"+i);
+			newElement.setExpired((Math.random() > 0.5)?true:false);
+			newElement.setType("type");
+			allElements.add(newElement);
+		}
+		
+			elementService.newElements(allElements, appSmartSpace, adminEmail);
+		
+			List<ElementBoundary> elementboundary = new ArrayList<ElementBoundary>();
+					allElements.stream().forEach(element->elementboundary.add(new ElementBoundary(element)));
+		
+		// WHEN I GET messages of size 10 and page 0
+		ElementBoundary[] response = 
+		this.restTemplate
+			.getForObject(
+					this.baseUrl + "/{adminSmartspace}/{adminEmail}" + "?size={size}&page={page}", 
+					ElementBoundary[].class, 
+					appSmartSpace,adminEmail,10, 0);
+		
+		// THEN I receive the exact messages written to the database			
+							
+		assertThat(response)
+			.usingElementComparatorOnFields("key", "elementType", "name", "expired") //TODO Add creator
+			.containsExactlyElementsOf(elementboundary);
+}
+
+
+@Test
+public void testGetAllElementsUsingPaginationOfSecondPage() throws Exception{
+	// GIVEN then database contains 11 Elements
+	//AND user data base has 1 use which is admin
+	
+	int size = 11;
+	List<ElementEntity> allElements = new  ArrayList<ElementEntity>();
+			for(int i=1; i<size+1;i++) {
+				ElementEntity newElement = new ElementEntity();
+				newElement.setName("Test"+i);
+				newElement.setExpired((Math.random() > 0.5)?true:false);
+				newElement.setType("type");
+				allElements.add(newElement);
+			}
+	
+//	MessageBoundary last = new MessageBoundary( 
+//	  all
+//		.stream()
+//		.sorted((e1,e2)->e2.getKey().compareTo(e1.getKey()))
+//		.findFirst()
+//		.orElseThrow(()->new RuntimeException("no messages after sorting")));
+	
+	ElementBoundary last =
+		allElements
+		.stream()
+		.skip(10)
+		.limit(1)
+		.map(ElementBoundary::new)
+		.findFirst()
+		.orElseThrow(()->new RuntimeException("no elements after skipping"));
+	
+	// WHEN I GET elements of size 10 and page 1
+	ElementBoundary[] result = this.restTemplate
+		.getForObject(
+				this.baseUrl +"/{adminSmartspace}/{adminEmail}" + "?page={page}&size={size}", 
+				ElementBoundary[].class, 
+				appSmartSpace,adminEmail, 1, 10);
+	
+	// THEN the result contains a single element(last message)
+	assertThat(result)
+		.usingElementComparator((b1,b2)->b1.toString().compareTo(b2.toString()))
+		.containsExactly(last);
+	}
+
+
+@Test
+public void testGetAllMessagesUsingPaginationOfSecondNonExistingPage() throws Exception{
+	// GIVEN the database contains 10 messages
+	IntStream
+		.range(0, 10)
+		.forEach(i->this.elementDao.create(new ElementEntity()));
+	
+	// WHEN I GET messages of size 10 and page 1
+	String[] result = 
+	  this.restTemplate
+		.getForObject(
+				this.baseUrl + "/{adminSmartspace}/{adminEmail}" + "?size={size}&page={pp}", 
+				String[].class, 
+				appSmartSpace,adminEmail,10, 1);
+	
+	// THEN the result is empty
+	assertThat(result)
+		.isEmpty();
+	
+}
+
 }
