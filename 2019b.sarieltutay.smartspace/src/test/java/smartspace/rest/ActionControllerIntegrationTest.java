@@ -1,5 +1,6 @@
 package smartspace.rest;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,7 +24,9 @@ import smartspace.dao.EnhancedUserDao;
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
 import smartspace.infra.ActionsService;
-import smartspace.layout.ElementBoundary;;
+import smartspace.layout.ActionBoundary;
+import smartspace.layout.ElementBoundary;
+import smartspace.layout.Key;;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
@@ -84,23 +87,9 @@ public class ActionControllerIntegrationTest {
 		//AND user data base has 1 use which is admin
 		
 		//WHEN admin POST new action
-		Map<String,Double> latlng = new HashMap<>();
-		latlng.put("lat", 3.5);
-		latlng.put("lng",2.5);
-		Map<String,String> creator = new HashMap<>();
-		creator.put("smartspace","MySmartSpace");
-		creator.put("email","admin@admin");
 		ActionBoundary newAction = new ActionBoundary();
-		Map<String,Object> elementProperties = new HashMap<String, Object>();
-		elementProperties.put("x", 10);
-		elementProperties.put("isTired", true);
-		
-		newAction.setName("Test");
-		newAction.setExpired(false);
-		newAction.setLatlng(latlng);
-		newAction.setCreator(creator);
-		newAction.setElementProperties(elementProperties);
-		newAction.setElementType("Test");
+		newAction.setCreated(new Date());
+		newAction.setElement(new Key("test",appSmartSpace));
 		
 		this.restTemplate
 		.postForObject(
