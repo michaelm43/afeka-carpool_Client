@@ -29,14 +29,11 @@ import smartspace.dao.EnhancedElementDao;
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.ElementEntity;
 import smartspace.data.Location;
-import smartspace.data.MessageEntity;
-import smartspace.data.SeverityEnum;
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
 import smartspace.infra.*;
 import smartspace.layout.ElementBoundary;
 import smartspace.layout.LocationForBoundary;
-import smartspace.layout.MessageBoundary;
 import smartspace.layout.UserForBoundary;
 
 
@@ -64,6 +61,11 @@ public class ElementControllerIntegrationTest {
 	@Autowired
 	public void setElementDao(EnhancedElementDao<String> elementDao) {
 		this.elementDao = elementDao;
+	}
+	
+	@Autowired
+	public void setUserDao(EnhancedUserDao<String> userDao) {
+		this.userDao = userDao;
 	}
 	
 	@LocalServerPort
@@ -138,13 +140,13 @@ public class ElementControllerIntegrationTest {
 		List<ElementBoundary> listOfElement = new ArrayList<ElementBoundary>();
 		ElementBoundary newElement = new ElementBoundary();
 		
-		Map<String,Double> latlng = new HashMap<>();
-		latlng.put("lat", 3.5);
-		latlng.put("lng",2.5);
+		LocationForBoundary latlng = new LocationForBoundary();
+		latlng.setLat(3.5);
+		latlng.setLng(2.5);
 		
-		Map<String,String> creator = new HashMap<>();
-		creator.put("smartspace","MySmartSpace");
-		creator.put("email","admin@admin");
+		UserForBoundary creator = new UserForBoundary();
+		creator.setSmartspace("MySmartSpace");
+		creator.setEmail("admin@admin");
 
 		Map<String,Object> elementProperties = new HashMap<String, Object>();
 		elementProperties.put("x", 10);
@@ -180,12 +182,13 @@ public class ElementControllerIntegrationTest {
 		// GIVEN the database is empty
 		
 		// WHEN I POST new message with bad code
-		Map<String,Double> latlng = new HashMap<>();
-		latlng.put("lat", 3.5);
-		latlng.put("lng",2.5);
-		Map<String,String> creator = new HashMap<>();
-		creator.put("smartspace","MySmartSpace");
-		creator.put("email","admin@admin");
+		LocationForBoundary latlng = new LocationForBoundary();
+		latlng.setLat(3.5);
+		latlng.setLng(2.5);
+		
+		UserForBoundary creator = new UserForBoundary();
+		creator.setSmartspace("MySmartSpace");
+		creator.setEmail("admin@admin");
 		ElementBoundary newElement = new ElementBoundary();
 		Map<String,Object> elementProperties = new HashMap<String, Object>();
 		elementProperties.put("x", 10);
@@ -206,6 +209,8 @@ public class ElementControllerIntegrationTest {
 				"Not our smartspace","NotAdmin");		//TODO How to create the admin? Check if its good!!!!!
 		
 		// THEN the test end with exception
+		
+		//assertThat(restTemplate)
 	}
 	
 	
@@ -229,7 +234,5 @@ public class ElementControllerIntegrationTest {
 		assertThat(response)
 			.hasSize(size);
 	}
-	
-	@Test
 	
 }
