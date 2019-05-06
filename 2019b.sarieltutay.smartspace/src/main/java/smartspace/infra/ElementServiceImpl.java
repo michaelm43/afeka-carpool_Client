@@ -39,9 +39,9 @@ public class ElementServiceImpl implements ElementsService {
 	@Transactional
 	public List<ElementEntity> newElements(List<ElementEntity> elements, String adminSmartspace, String adminEmail) {
 		List<ElementEntity> elements_entities = new ArrayList<ElementEntity>();
-		if (!(this.smartspace.equals(adminSmartspace)) || !valiadete_admin(adminSmartspace, adminEmail)) {
-			throw new RuntimeException("user are not allowed to create elements");
-		}
+	//	if (!(this.smartspace.equals(adminSmartspace)) || !valiadete_admin(adminSmartspace, adminEmail)) {
+	//		throw new RuntimeException("user are not allowed to create elements");
+	//	}
 
 		for (ElementEntity element : elements) {
 			if (valiadate(element)) {
