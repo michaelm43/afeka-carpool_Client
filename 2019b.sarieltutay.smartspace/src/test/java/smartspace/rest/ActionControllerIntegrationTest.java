@@ -22,7 +22,7 @@ import smartspace.dao.EnhancedActionDao;
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
-import smartspace.infra.ActionService;
+import smartspace.infra.ActionsService;
 import smartspace.layout.ElementBoundary;;
 
 @RunWith(SpringRunner.class)
@@ -34,9 +34,9 @@ public class ActionControllerIntegrationTest {
 	private String baseUrl;
 	private int port;
 	private RestTemplate restTemplate;
-	private EnhancedActionDao<String> actionDao;
+	private EnhancedActionDao actionDao;
 	private EnhancedUserDao<String> userDao;
-	private ActionService actionService;
+	private ActionsService actionService;
 
 	
 	@Value("${smartspace.name}")
@@ -45,12 +45,12 @@ public class ActionControllerIntegrationTest {
 	
 	
 	@Autowired
-	public void setActionService(ActionService actionService) {
+	public void setActionService(ActionsService actionService) {
 		this.actionService = actionService;
 	}
 	
 	@Autowired
-	public void setActionDao(EnhancedActionDao<String> actionDao) {
+	public void setActionDao(EnhancedActionDao actionDao) {
 		this.actionDao = actionDao;
 	}
 	

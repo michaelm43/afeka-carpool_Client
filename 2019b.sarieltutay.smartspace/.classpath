@@ -113,5 +113,23 @@
 	<classpathentry kind="lib" path="C:/Users/shaym/Desktop/ioc-db-rest-lib/tomcat-embed-websocket-9.0.16.jar"/>
 	<classpathentry kind="lib" path="C:/Users/shaym/Desktop/ioc-db-rest-lib/validation-api-2.0.1.Final.jar"/>
 	<classpathentry kind="lib" path="C:/Users/shaym/Desktop/ioc-db-rest-lib/xmlunit-core-2.6.2.jar"/>
+	<classpathentry kind="src" output="target/classes" path="main/java">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" output="target/test-classes" path="test/java">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
