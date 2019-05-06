@@ -1,5 +1,7 @@
 package smartspace.rest;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +28,8 @@ import smartspace.data.UserRole;
 import smartspace.infra.ActionsService;
 import smartspace.layout.ActionBoundary;
 import smartspace.layout.ElementBoundary;
-import smartspace.layout.Key;;
+import smartspace.layout.Key;
+import smartspace.layout.UserForBoundary;;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
@@ -43,7 +46,7 @@ public class ActionControllerIntegrationTest {
 
 	
 	@Value("${smartspace.name}")
-	private String appSmartSpace;
+	private String appSmartspace;
 	private String adminEmail = "admin@admin";
 	
 	
@@ -88,19 +91,28 @@ public class ActionControllerIntegrationTest {
 		
 		//WHEN admin POST new action
 		ActionBoundary newAction = new ActionBoundary();
+		
+		Map<String,Object> actionProperties = new HashMap<String, Object>();
+		actionProperties.put("x", 10);
+		actionProperties.put("isTired", true);
+		
 		newAction.setCreated(new Date());
-		newAction.setElement(new Key("test",appSmartSpace));
+		newAction.setElement(new Key("test",appSmartspace));
+		newAction.setPlayer(new UserForBoundary("test@test",appSmartspace));
+		newAction.setProperties(actionProperties);
+		newAction.setType("test");
 		
 		this.restTemplate
 		.postForObject(
 				this.baseUrl + "/{adminSmartspace}/{adminEmail}", 
-				newElement, 
+				newAction, 
 				ElementBoundary.class, 
-				appSmartSpace,adminEmail);		//TODO How to create the admin? Check if its good!!!!!
+				appSmartspace,adminEmail);		//TODO How to create the admin? Check if its good!!!!!
 		
 		//THEN the database contains a single action
-		assertThat(this.elementDao
+		assertThat(this.actionDao
 				.readAll())
 				.hasSize(1);
 	}	
+}
 

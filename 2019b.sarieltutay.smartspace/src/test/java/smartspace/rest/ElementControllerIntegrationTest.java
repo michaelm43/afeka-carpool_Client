@@ -13,7 +13,6 @@ import java.util.stream.IntStream;
 import javax.annotation.PostConstruct;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -29,12 +29,12 @@ import org.springframework.web.client.RestTemplate;
 import smartspace.dao.EnhancedElementDao;
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.ElementEntity;
-import smartspace.data.Location;
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
 import smartspace.layout.ElementBoundary;
 import smartspace.layout.LocationForBoundary;
 import smartspace.layout.UserForBoundary;
+import sun.net.www.http.HttpClient;
 import smartspace.infra.*;
 
 @RunWith(SpringRunner.class)
@@ -75,13 +75,11 @@ public class ElementControllerIntegrationTest {
 
 	@PostConstruct
 	public void init() {
+		this.userDao.create(new UserEntity("appSmartSpace", adminEmail, "admin", "adminAvatar", UserRole.ADMIN, 0));
+		
 		this.baseUrl = "http://localhost:" + port + "/smartspace/admin/elements";
 	}
-
-	@Before
-	public void initAdmin() {
-		this.userDao.create(new UserEntity("appSmartSpace", adminEmail, "admin", "adminAvatar", UserRole.ADMIN, 0));
-	}
+	
 
 	@After
 	public void tearDown() {
@@ -113,8 +111,11 @@ public class ElementControllerIntegrationTest {
 		newElement.setCreator(creator);
 		newElement.setElementProperties(elementProperties);
 		newElement.setElementType("Test");
+		
+		List<ElementBoundary> elementList = new ArrayList<>();
+		elementList.add(newElement);
 
-		this.restTemplate.postForObject(this.baseUrl + "/{adminSmartspace}/{adminEmail}", newElement,
+		this.restTemplate.postForObject(this.baseUrl + "/{adminSmartspace}/{adminEmail}", elementList,
 				ElementBoundary.class, appSmartSpace, adminEmail); // TODO How to create the admin? Check if its
 																	// good!!!!!
 

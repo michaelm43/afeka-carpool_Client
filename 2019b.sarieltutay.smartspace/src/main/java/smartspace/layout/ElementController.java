@@ -1,6 +1,7 @@
 package smartspace.layout;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,20 +32,19 @@ public class ElementController {
 			method=RequestMethod.POST,
 			consumes=MediaType.APPLICATION_JSON_VALUE,
 			produces=MediaType.APPLICATION_JSON_VALUE)
-	public ElementBoundary[] newElement (
+	public List<ElementBoundary> newElement (
 			@RequestBody ElementBoundary[] elements, 
 			@PathVariable("adminSmartspace") String adminSmartspace, 
 			@PathVariable("adminEmail") String adminEmail) {
 		
-		return this.elementsService.newElemets(Arrays.asList(elements)
+		return this.elementsService.newElements(Arrays.asList(elements)
 				.stream()
 				.map(ElementBoundary::convertToEntity)
 				.collect(Collectors.toList())
 				,adminSmartspace, adminEmail)
 				.stream()
 				.map(ElementBoundary::new)
-				.collect(Collectors.toList())
-				.toArray(new ElementBoundary[0]);
+				.collect(Collectors.toList());
 	}
 
 	@RequestMapping(
