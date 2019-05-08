@@ -130,5 +130,10 @@ public class RdbUserDao implements EnhancedUserDao<String> {
 						"%" + smartspace + "%",
 						PageRequest.of(page, size));
 	}
+
+	@Override
+	public UserEntity readUserUsingSmartspaceAndEmail(String smartspace, String email) {		//TODO
+		return null;
+	}
 	
 }
