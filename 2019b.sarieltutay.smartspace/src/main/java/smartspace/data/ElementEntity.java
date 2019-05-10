@@ -32,14 +32,11 @@ public class ElementEntity implements SmartspaceEntity<String> {
 	private Map<String, Object> moreAttributes;
 
 	public ElementEntity() {
-		//to delete
 		this.creationTimestamp = new Date();
-		//to delete
 		this.location = new Location();
 		
 	}
 	
-	//to delete
 	public ElementEntity(String name) {
 		this();
 		this.name = name;	

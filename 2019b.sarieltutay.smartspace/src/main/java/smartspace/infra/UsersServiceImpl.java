@@ -62,9 +62,7 @@ public class UsersServiceImpl implements UsersService {
 	}
 	
 	
-	//need to check
 	private boolean valiadate(UserEntity entity) {
-				//???????
 				return entity != null &&
 						entity.getAvatar()!= null &&
 						!entity.getAvatar().trim().isEmpty() &&
@@ -84,7 +82,7 @@ public class UsersServiceImpl implements UsersService {
 			throw new RuntimeException("user are not allowed to get users");
 		else
 			return this.userDao
-					.readAll("username", size, page);//key?????
+					.readAll("username", size, page);
 	}
 
 }

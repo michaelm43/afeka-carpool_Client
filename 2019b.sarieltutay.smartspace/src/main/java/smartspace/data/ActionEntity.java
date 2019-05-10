@@ -32,13 +32,10 @@ public class ActionEntity implements SmartspaceEntity<String> {
 	
 	
 	public ActionEntity() {
-		//to delete
 		this.creationTimestamp = new Date();
-		//to delete
 		this.moreAttributes = new HashMap<>();
 	}
 	
-	//to delete!!
 	public ActionEntity(String type) {
 		this();
 		this.actionType = type;
@@ -57,7 +54,6 @@ public class ActionEntity implements SmartspaceEntity<String> {
 		this.moreAttributes = moreAttributes;
 	}
 	
-	//to check
 	public ActionEntity(String actionSmartspace, String actionId, String elementSmartspace, String elementId,
 			String playerSmartspace, String playerEmail, String actionType, Date creationTimestamp,
 			Map<String, Object> moreAttributes) {
