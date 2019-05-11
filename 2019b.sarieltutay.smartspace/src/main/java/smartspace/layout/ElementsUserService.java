@@ -11,7 +11,7 @@ public interface ElementsUserService {
 	public ElementEntity newElement(ElementEntity element, String userSmartspace, String userEmail, UserRole role);
 	
 	public void setElement(String userSmartspace, String userEmail, String elementSmartspace, String elementId,
-			ElementBoundary element, UserRole role);
+			ElementEntity element, UserRole role);
 	
 	public ElementEntity getSpecificElement(String userSmartspace, String userEmail, String elementSmartspace,
 			String elementId, UserRole role);
@@ -23,8 +23,8 @@ public interface ElementsUserService {
 			int x, int y, int distance, int size, int page, UserRole role);
 	
 	public Collection<ElementEntity> getElementsUsingPaginationOfName(String userSmartspace, String userEmail,
-			int name, int size, int page, UserRole role);
+			String name, int size, int page, UserRole role);
 
 	public List<ElementEntity> getElementsUsingPaginationOfSpecifiedType(String userSmartspace, String userEmail,
-			int type, int size, int page, UserRole role);
+			String type, int size, int page, UserRole role);
 }

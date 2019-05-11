@@ -17,8 +17,6 @@ import smartspace.data.UserRole;
 public class ElementsUserServiceImpl implements ElementsUserService{
 
 	private EnhancedElementDao<String> elementDao;
-	private EnhancedUserDao<String> userDao;
-	private String smartspace;
 	
 	@Autowired
 	public ElementsUserServiceImpl(EnhancedElementDao<String> elementDao, EnhancedUserDao<String> userDao) {
@@ -27,9 +25,6 @@ public class ElementsUserServiceImpl implements ElementsUserService{
 	}
 
 	@Value("${smartspace.name}")
-	public void setSmartspace(String smartspace) {
-		this.smartspace = smartspace;
-	}
 	
 	
 	@Override
@@ -46,7 +41,7 @@ public class ElementsUserServiceImpl implements ElementsUserService{
 		}
 		
 		else {
-			throw new RuntimeException("The URl isnt match for manager or player. use another user or URL that match admin user");		
+			throw new RuntimeException("The URl isn't match for manager or player. use another user or URL that match admin user");		
 		}
 
 		return element;
@@ -55,23 +50,21 @@ public class ElementsUserServiceImpl implements ElementsUserService{
 	@Override
 	@Transactional
 	@CheckRollOfUser
-	public void setElement(String userSmartspace, String userEmail, String elementSmartspace, String elementId,
-			ElementBoundary element, UserRole role) {
+	public void setElement(String userSmartspace, String userEmail, String elementSmartspace, String elementId,		//TODO what to do with the smartspace?
+			ElementEntity element, UserRole role) {
 		
 		if(role==UserRole.MANAGER||role==UserRole.PLAYER) {
-			if(valiadate(element)) {
-				element.setCreationTimestamp(new Date());
-				this.elementDao.createImportAction(element);
+			if(valiadate(element)) {							//TODO should we check the validate?!
+				element.setCreationTimestamp(new Date());		//TODO should we change the Timestamp?
+				this.elementDao.update(element);
 			}
 			else
 				throw new RuntimeException("invalid element");
 		}
 		
 		else {
-			throw new RuntimeException("The URl isnt match for manager or player. use another user or URL that match admin user");		
+			throw new RuntimeException("The URl isn't match for manager or player. use another user or URL that match admin user");		
 		}
-
-		
 	}
 
 	@Override
@@ -79,8 +72,20 @@ public class ElementsUserServiceImpl implements ElementsUserService{
 	@CheckRollOfUser
 	public ElementEntity getSpecificElement(String userSmartspace, String userEmail, String elementSmartspace,
 			String elementId, UserRole role) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if(role==UserRole.MANAGER) {
+			return this.elementDao.readById(elementId)
+					.orElseThrow(() -> new RuntimeException("There is no element with the given key"));
+		}
+		else if(role==UserRole.PLAYER) {
+			this.elementDao.readById(elementId).filter(ElementEntity::isExpired)
+					.orElseThrow(() -> new RuntimeException("There is no element with the given key"));
+		}
+		else {
+			throw new RuntimeException("The URl isn't match for manager or player. use another user or URL that match admin user");		
+		}
+
+		throw new RuntimeException("The element is expired");		
 	}
 
 	@Override
@@ -88,8 +93,16 @@ public class ElementsUserServiceImpl implements ElementsUserService{
 	@CheckRollOfUser
 	public List<ElementEntity> getElementsUsingPagination(String userSmartspace, String userEmail, int size, int page,
 			UserRole role) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if(role==UserRole.MANAGER) {
+			return this.elementDao.readAll(size, page);
+		}
+		else if(role==UserRole.PLAYER) {
+			return this.elementDao.readAllNotExpierd(size,page);
+		}
+		else {
+			throw new RuntimeException("The URl isn't match for manager or player. use another user or URL that match admin user");		
+		}
 	}
 
 	@Override
@@ -97,26 +110,50 @@ public class ElementsUserServiceImpl implements ElementsUserService{
 	@CheckRollOfUser
 	public List<ElementEntity> getElementsUsingPaginationOfLocation(String userSmartspace, String userEmail,
 			int x, int y, int distance, int size, int page, UserRole role) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if(role==UserRole.MANAGER) {
+			return this.elementDao.readAllUsingLocation(x, y, distance, size, page);
+		}
+		else if(role==UserRole.PLAYER) {
+			return this.elementDao.readAllUsingLocationNotExpired(x, y, distance, size, page);
+		}
+		else {
+			throw new RuntimeException("The URl isn't match for manager or player. use another user or URL that match admin user");		
+		}
 	}
 
 	@Override
 	@Transactional
 	@CheckRollOfUser
 	public List<ElementEntity> getElementsUsingPaginationOfName(String userSmartspace, String userEmail,
-			int name, int size, int page, UserRole role) {
-		// TODO Auto-generated method stub
-		return null;
+			String name, int size, int page, UserRole role) {
+
+		if(role==UserRole.MANAGER) {
+			return this.elementDao.readAllUsingName(name, size, page);
+		}
+		else if(role==UserRole.PLAYER) {
+			return this.elementDao.readAllUsingNameNotExpired(name, size, page);
+		}
+		else {
+			throw new RuntimeException("The URl isn't match for manager or player. use another user or URL that match admin user");		
+		}
 	}
 
 	@Override
 	@Transactional
 	@CheckRollOfUser
 	public List<ElementEntity> getElementsUsingPaginationOfSpecifiedType(String userSmartspace, String userEmail,
-			int type, int size, int page, UserRole role) {
-		// TODO Auto-generated method stub
-		return null;
+			String type, int size, int page, UserRole role) {
+
+		if(role==UserRole.MANAGER) {
+			return this.elementDao.readAllUsingType(type, size, page);
+		}
+		else if(role==UserRole.PLAYER) {
+			return this.elementDao.readAllUsingTypeNotExpired(type, size, page);
+		}
+		else {
+			throw new RuntimeException("The URl isn't match for manager or player. use another user or URL that match admin user");		
+		}
 	}
 	
 	

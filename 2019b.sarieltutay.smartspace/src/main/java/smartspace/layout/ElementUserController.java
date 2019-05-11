@@ -49,7 +49,7 @@ public class ElementUserController {
 			@PathVariable("elementId") String elementId,
 			@RequestBody ElementBoundary element){
 			this.elementsService
-			.setElement(userSmartspace, userEmail,elementSmartspace,elementId,element,null);
+			.setElement(userSmartspace, userEmail,elementSmartspace,elementId,element.convertToEntity(),null);
 	}
 	
 	@RequestMapping(
@@ -112,7 +112,7 @@ public class ElementUserController {
 	public ElementBoundary[] getElementsUsingPaginationOfSpecifiedName (
 			@PathVariable("userSmartspace") String userSmartspace, 
 			@PathVariable("userEmail") String userEmail,
-			@RequestParam(name="value", required=true) int name,
+			@RequestParam(name="value", required=true) String name,
 			@RequestParam(name="size", required=false, defaultValue="10") int size,
 			@RequestParam(name="page", required=false, defaultValue="0") int page) {
 		return 
@@ -131,7 +131,7 @@ public class ElementUserController {
 	public ElementBoundary[] getElementsUsingPaginationOfSpecifiedType (
 			@PathVariable("userSmartspace") String userSmartspace, 
 			@PathVariable("userEmail") String userEmail,
-			@RequestParam(name="value", required=true) int type,
+			@RequestParam(name="value", required=true) String type,
 			@RequestParam(name="size", required=false, defaultValue="10") int size,
 			@RequestParam(name="page", required=false, defaultValue="0") int page) {
 		return 
