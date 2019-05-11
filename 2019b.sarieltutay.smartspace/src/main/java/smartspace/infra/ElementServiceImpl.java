@@ -66,10 +66,7 @@ public class ElementServiceImpl implements ElementsService {
 		return false;
 	}
 
-	// need to check
 	private boolean valiadate(ElementEntity entity) {
-		// need MoreAttributes??
-		// ???????
 		return entity != null 
 				&& entity.getCreatorSmartspace() != null && !entity.getCreatorSmartspace().trim().isEmpty() 
 				&& entity.getCreatorEmail() != null && !entity.getCreatorEmail().trim().isEmpty() 

@@ -36,7 +36,6 @@ public class UserEntity implements SmartspaceEntity<String> {
 		super();
 	}
 	
-	//TO DELETE
 	public UserEntity(String userEmail) {
 		this.userEmail = userEmail;
 	}

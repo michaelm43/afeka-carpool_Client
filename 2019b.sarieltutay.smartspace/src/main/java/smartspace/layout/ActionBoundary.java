@@ -14,13 +14,12 @@ public class ActionBoundary {
 	private Map<String, Object> properties;
 	
 	public ActionBoundary() {
-		this.actionKey = new Key();//delete?
-		this.element = new Key();//delete?
-		this.player=new UserForBoundary();//delete?
+		this.actionKey = new Key();
+		this.element = new Key();
+		this.player=new UserForBoundary();
 	}
 	
 	
-	//to delete?
 	public ActionBoundary(String type, Key element, UserForBoundary player, Map<String, Object> properties) {
 		super();
 		this.type = type;
@@ -29,9 +28,6 @@ public class ActionBoundary {
 		this.properties = properties;
 	}
 
-
-
-	//check?????/
 	public ActionBoundary(ActionEntity entity){
 		if(entity!=null) {
 			if(entity.getActionId() != null && entity.getActionSmartspace() != null)

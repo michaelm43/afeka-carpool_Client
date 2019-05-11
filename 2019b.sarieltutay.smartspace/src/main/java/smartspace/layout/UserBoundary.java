@@ -14,7 +14,6 @@ public class UserBoundary {
 		
 	}
 	
-	//TO DELETE?
 	public UserBoundary(String username, String avatar, String role, long points) {
 		super();
 		this.username = username;

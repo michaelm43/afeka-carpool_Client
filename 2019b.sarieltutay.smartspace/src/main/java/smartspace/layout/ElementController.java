@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import smartspace.aop.CheckRollOfUser;
-import smartspace.data.UserRole;
 import smartspace.infra.ElementsService;
 
 @RestController
@@ -64,21 +62,6 @@ public class ElementController {
 			.map(ElementBoundary::new)
 			.collect(Collectors.toList())
 			.toArray(new ElementBoundary[0]);
-	}
-
-	@RequestMapping(
-			path="/smartspace/admin/elements/{userSmartspace}/{userEmail}/{elementSmartspace}/{elementId}",
-			method=RequestMethod.PUT,
-			produces=MediaType.APPLICATION_JSON_VALUE)
-	public void patchElement (
-			@PathVariable("userSmartspace") String userSmartspace, 
-			@PathVariable("userEmail") String userEmail,
-			@PathVariable("elementSmartspace") String elementSmartspace,
-			@PathVariable("elementId") String elementId,
-			@RequestBody ElementBoundary element){
-		return 
-			this.elementsService
-			.setElement(userSmartspace, userEmail,elementSmartspace,elementId,element);
 	}
 }
 

@@ -79,9 +79,7 @@ public class ActionsServiceImpl implements ActionsService {
 		return false;
 	}
 	
-	//need to check
 		private boolean valiadate(ActionEntity entity) {
-			//???????
 			return entity != null &&
 					entity.getActionId()!= null &&
 					!entity.getActionId().trim().isEmpty() &&
@@ -109,7 +107,7 @@ public class ActionsServiceImpl implements ActionsService {
 			throw new RuntimeException("user are not allowed to get actions");
 		else
 			return this.actionDao
-					.readAll("creationTimestamp", size, page);//key?????
+					.readAll("creationTimestamp", size, page);
 	}
 
 
