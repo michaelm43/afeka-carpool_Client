@@ -25,7 +25,7 @@ public class PermissionChecker {
 	}
 	
 	
-	@Before("@annotation(smartspace.aop.CheckRollOfUser) && args(smartspace,email..)")
+	@Before("@annotation(smartspace.aop.CheckRollOfUser) && args(smartspace,email,role..)")
 	public void checkRoll(ProceedingJoinPoint pjp, String smartspace, String email, UserRole role) throws Throwable {
 		// before
 		String method = pjp.getSignature().getName();

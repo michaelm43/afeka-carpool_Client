@@ -1,51 +1,135 @@
 package smartspace.layout;
 
+import java.util.Date;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+
+import smartspace.aop.CheckRollOfUser;
+import smartspace.dao.EnhancedElementDao;
+import smartspace.dao.EnhancedUserDao;
 import smartspace.data.ElementEntity;
 import smartspace.data.UserRole;
 
 public class ElementsUserServiceImpl implements ElementsUserService{
 
-	public ElementEntity newElement(ElementEntity element, String userSmartspace, String userEmail,UserRole role) {
-		// TODO Auto-generated method stub
-		return null;
+	private EnhancedElementDao<String> elementDao;
+	private EnhancedUserDao<String> userDao;
+	private String smartspace;
+	
+	@Autowired
+	public ElementsUserServiceImpl(EnhancedElementDao<String> elementDao, EnhancedUserDao<String> userDao) {
+		super();
+		this.elementDao = elementDao;
 	}
 
+	@Value("${smartspace.name}")
+	public void setSmartspace(String smartspace) {
+		this.smartspace = smartspace;
+	}
+	
+	
+	@Override
+	@Transactional
+	@CheckRollOfUser
+	public ElementEntity newElement(ElementEntity element, String userSmartspace, String userEmail,UserRole role) {
+		if(role==UserRole.MANAGER||role==UserRole.PLAYER) {
+			if(valiadate(element)) {
+				element.setCreationTimestamp(new Date());
+				this.elementDao.createImportAction(element);
+			}
+			else
+				throw new RuntimeException("invalid element");
+		}
+		
+		else {
+			throw new RuntimeException("The URl isnt match for manager or player. use another user or URL that match admin user");		
+		}
+
+		return element;
+	}
+
+	@Override
+	@Transactional
+	@CheckRollOfUser
 	public void setElement(String userSmartspace, String userEmail, String elementSmartspace, String elementId,
 			ElementBoundary element, UserRole role) {
-		// TODO Auto-generated method stub
+		
+		if(role==UserRole.MANAGER||role==UserRole.PLAYER) {
+			if(valiadate(element)) {
+				element.setCreationTimestamp(new Date());
+				this.elementDao.createImportAction(element);
+			}
+			else
+				throw new RuntimeException("invalid element");
+		}
+		
+		else {
+			throw new RuntimeException("The URl isnt match for manager or player. use another user or URL that match admin user");		
+		}
+
 		
 	}
 
+	@Override
+	@Transactional
+	@CheckRollOfUser
 	public ElementEntity getSpecificElement(String userSmartspace, String userEmail, String elementSmartspace,
 			String elementId, UserRole role) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
+	@Transactional
+	@CheckRollOfUser
 	public List<ElementEntity> getElementsUsingPagination(String userSmartspace, String userEmail, int size, int page,
 			UserRole role) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
+	@Transactional
+	@CheckRollOfUser
 	public List<ElementEntity> getElementsUsingPaginationOfLocation(String userSmartspace, String userEmail,
 			int x, int y, int distance, int size, int page, UserRole role) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
+	@Transactional
+	@CheckRollOfUser
 	public List<ElementEntity> getElementsUsingPaginationOfName(String userSmartspace, String userEmail,
 			int name, int size, int page, UserRole role) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Override
+	@Transactional
+	@CheckRollOfUser
 	public List<ElementEntity> getElementsUsingPaginationOfSpecifiedType(String userSmartspace, String userEmail,
 			int type, int size, int page, UserRole role) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	
+	private boolean valiadate(ElementEntity entity) {
+		return entity != null 
+				&& entity.getCreatorSmartspace() != null && !entity.getCreatorSmartspace().trim().isEmpty() 
+				&& entity.getCreatorEmail() != null && !entity.getCreatorEmail().trim().isEmpty() 
+				&& entity.getName() != null && !entity.getName().trim().isEmpty()
+				&& entity.getType() != null && !entity.getType().trim().isEmpty()
+				&& entity.getElementId() != null && !entity.getElementId().trim().isEmpty()
+				&& entity.getElementSmartspace() != null && !entity.getElementSmartspace().trim().isEmpty()
+				&& entity.getLocation() != null
+				&& entity.getMoreAttributes() != null;
 	}
 
 }

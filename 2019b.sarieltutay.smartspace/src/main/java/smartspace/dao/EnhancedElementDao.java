@@ -2,7 +2,6 @@ package smartspace.dao;
 
 import java.util.List;
 
-import smartspace.data.ActionEntity;
 import smartspace.data.ElementEntity;
 
 public interface EnhancedElementDao<Key> extends ElementDao<Key> {

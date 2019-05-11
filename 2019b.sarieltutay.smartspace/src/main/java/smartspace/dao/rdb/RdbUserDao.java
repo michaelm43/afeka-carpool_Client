@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import smartspace.dao.EnhancedUserDao;
-import smartspace.dao.UserDao;
 import smartspace.data.UserEntity;
 
 @Repository

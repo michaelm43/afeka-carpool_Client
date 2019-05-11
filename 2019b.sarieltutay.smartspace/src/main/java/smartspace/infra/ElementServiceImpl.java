@@ -86,5 +86,4 @@ public class ElementServiceImpl implements ElementsService {
 		else
 			return this.elementDao.readAll("creationTimestamp", size, page);// key?????
 	}
-
 }
