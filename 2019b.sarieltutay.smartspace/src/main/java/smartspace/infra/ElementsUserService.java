@@ -1,4 +1,4 @@
-package smartspace.layout;
+package smartspace.infra;
 
 import java.util.Collection;
 import java.util.List;

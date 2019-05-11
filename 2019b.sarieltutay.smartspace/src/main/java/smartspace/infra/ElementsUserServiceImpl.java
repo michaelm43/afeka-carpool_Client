@@ -1,4 +1,4 @@
-package smartspace.layout;
+package smartspace.infra;
 
 import java.util.Date;
 import java.util.List;

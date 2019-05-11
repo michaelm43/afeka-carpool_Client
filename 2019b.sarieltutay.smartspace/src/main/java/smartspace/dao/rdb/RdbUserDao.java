@@ -61,7 +61,7 @@ public class RdbUserDao implements EnhancedUserDao<String> {
 
 		// SQL: SELECT
 		this.userCrud.findAll().forEach(rv::add);
-
+		
 		return rv;
 	}
 
