@@ -15,7 +15,7 @@ import smartspace.data.UserRole;
 @Component
 @Aspect
 public class PermissionChecker {
-	Log logger = LogFactory.getLog(CheckRollOfUser.class);
+	Log logger = LogFactory.getLog(CheckRoleOfUser.class);
 	private EnhancedUserDao<String> userDao;
 	
 	@Autowired

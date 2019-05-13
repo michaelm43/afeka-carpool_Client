@@ -131,8 +131,10 @@ public class RdbUserDao implements EnhancedUserDao<String> {
 	}
 
 	@Override
-	public UserEntity readUserUsingSmartspaceAndEmail(String smartspace, String email) {		//TODO
-		return null;
+	@Transactional(readOnly=true)
+	public UserEntity readUserUsingSmartspaceAndEmail(String smartspace, String email) {
+		return this.userCrud
+				.findByUserSmartspaceAndUserEmail(smartspace, email);
 	}
 	
 }

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import smartspace.dao.EnhancedElementDao;
 import smartspace.data.ElementEntity;
+import smartspace.data.Location;
 
 @Repository
 public class RdbElementDao implements EnhancedElementDao<String> {
@@ -146,44 +147,38 @@ public class RdbElementDao implements EnhancedElementDao<String> {
 
 	@Override
 	public List<ElementEntity> readAllNotExpierd(int size, int page) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.elementCrud.findAllByExpired(false, PageRequest.of(page, size));
 	}
 
 	@Override
 	public List<ElementEntity> readAllUsingLocation(int x, int y, int distance, int size, int page) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.elementCrud.findAllByLocationBetween(new Location(x,y), 
+				new Location(x+distance,y+distance), PageRequest.of(page, size));
 	}
 
 	@Override
 	public List<ElementEntity> readAllUsingLocationNotExpired(int x, int y, int distance, int size, int page) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.elementCrud.findAllByExpiredAndLocationBetween(false, new Location(x,y), 
+				new Location(x+distance,y+distance), PageRequest.of(page, size));
 	}
 
 	@Override
 	public List<ElementEntity> readAllUsingName(String name, int size, int page) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.elementCrud.findAllByName(name, PageRequest.of(page, size));
 	}
 
 	@Override
 	public List<ElementEntity> readAllUsingNameNotExpired(String name, int size, int page) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.elementCrud.findAllByNameAndExpired(name, false, PageRequest.of(page, size));
 	}
 
 	@Override
 	public List<ElementEntity> readAllUsingType(String type, int size, int page) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.elementCrud.findAllByType(type, PageRequest.of(page, size));
 	}
 
 	@Override
 	public List<ElementEntity> readAllUsingTypeNotExpired(String type, int size, int page) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.elementCrud.findAllByExpiredAndType(false, type, PageRequest.of(page, size));
 	}
-
 }
