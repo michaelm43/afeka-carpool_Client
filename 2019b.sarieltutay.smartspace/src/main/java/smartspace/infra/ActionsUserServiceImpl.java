@@ -8,7 +8,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import smartspace.aop.CheckRollOfUser;
+import smartspace.aop.CheckRoleOfUser;
 import smartspace.dao.EnhancedActionDao;
 import smartspace.data.ActionEntity;
 import smartspace.data.UserRole;
@@ -25,7 +25,7 @@ public class ActionsUserServiceImpl implements ActionsUserService{
 	
 	@Override
 	@Transactional
-	@CheckRollOfUser
+	@CheckRoleOfUser
 	public Map<String,Object> invokeAction(ActionEntity action,String smartspace,String email ,UserRole role) {
 		
 		if(role == UserRole.ADMIN) {
