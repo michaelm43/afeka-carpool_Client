@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -34,7 +33,6 @@ import smartspace.data.UserRole;
 import smartspace.layout.ElementBoundary;
 import smartspace.layout.LocationForBoundary;
 import smartspace.layout.UserForBoundary;
-import sun.net.www.http.HttpClient;
 import smartspace.infra.*;
 
 @RunWith(SpringRunner.class)

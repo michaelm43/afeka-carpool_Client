@@ -34,8 +34,7 @@ public class ElementUserController {
 			@RequestBody ElementBoundary element, 
 			@PathVariable("userSmartspace") String userSmartspace, 
 			@PathVariable("userEmail") String userEmail) {		
-		return new ElementBoundary(elementsService.newElement(element.convertToEntity()
-				,userSmartspace, userEmail,null));			//TODO check if role is ok
+		return new ElementBoundary(elementsService.newElement(userSmartspace, userEmail,null,element.convertToEntity()));		
 			}
 
 
@@ -50,7 +49,7 @@ public class ElementUserController {
 			@PathVariable("elementId") String elementId,
 			@RequestBody ElementBoundary element){
 			this.elementsService
-			.setElement(userSmartspace, userEmail,elementSmartspace,elementId,element.convertToEntity(),null);
+			.setElement(userSmartspace, userEmail,null,elementSmartspace,elementId,element.convertToEntity());
 	}
 	
 	@RequestMapping(
@@ -64,11 +63,11 @@ public class ElementUserController {
 			@PathVariable("elementId") String elementId) {
 		return 
 			new ElementBoundary(elementsService
-			.getSpecificElement(userSmartspace, userEmail, elementSmartspace,elementId,null));
+			.getSpecificElement(userSmartspace, userEmail,null, elementSmartspace,elementId));
 	}
 	
 	@RequestMapping(
-			path="/smartspace/elements/{userSmartspace}/{userEmail}?page={page}?size={size}",
+			path="/smartspace/elements/{userSmartspace}/{userEmail}?page={page}&size={size}",
 			method=RequestMethod.GET,
 			produces=MediaType.APPLICATION_JSON_VALUE)
 	public ElementBoundary[] getElementsUsingPagination (
@@ -78,7 +77,7 @@ public class ElementUserController {
 			@RequestParam(name="page", required=false, defaultValue="0") int page) {
 		return 
 				this.elementsService
-				.getElementsUsingPagination(userSmartspace, userEmail, size, page,null)
+				.getElementsUsingPagination(userSmartspace, userEmail,null, size, page)
 				.stream()
 				.map(ElementBoundary::new)
 				.collect(Collectors.toList())
@@ -86,7 +85,7 @@ public class ElementUserController {
 	}
 	
 	@RequestMapping(
-			path="/smartspace/elements/{userSmartspace}/{userEmail}?search=location&x={x}&y={y}&distance={distance}page={page}&size={size}",
+			path="/smartspace/elements/{userSmartspace}/{userEmail}?search=location&x={x}&y={y}&distance={distance}&page={page}&size={size}",
 			method=RequestMethod.GET,
 			produces=MediaType.APPLICATION_JSON_VALUE)
 	public ElementBoundary[] getElementsUsingPaginationOfLocation (
@@ -99,7 +98,7 @@ public class ElementUserController {
 			@RequestParam(name="page", required=false, defaultValue="0") int page) {
 		return 
 				this.elementsService
-				.getElementsUsingPaginationOfLocation(userSmartspace, userEmail, x, y, distance, size, page, null)
+				.getElementsUsingPaginationOfLocation(userSmartspace, userEmail, null, x, y, distance, size, page)
 				.stream()
 				.map(ElementBoundary::new)
 				.collect(Collectors.toList())
@@ -107,7 +106,7 @@ public class ElementUserController {
 	}
 	
 	@RequestMapping(
-			path="/smartspace/elements/{userSmartspace}/{userEmail}?search=name&value={name}&spage={page}&size={size}",
+			path="/smartspace/elements/{userSmartspace}/{userEmail}?search=name&value={name}&page={page}&size={size}",
 			method=RequestMethod.GET,
 			produces=MediaType.APPLICATION_JSON_VALUE)
 	public ElementBoundary[] getElementsUsingPaginationOfSpecifiedName (
@@ -118,7 +117,7 @@ public class ElementUserController {
 			@RequestParam(name="page", required=false, defaultValue="0") int page) {
 		return 
 				this.elementsService
-				.getElementsUsingPaginationOfName(userSmartspace, userEmail, name, size, page, null)
+				.getElementsUsingPaginationOfName(userSmartspace, userEmail, null, name, size, page)
 				.stream()
 				.map(ElementBoundary::new)
 				.collect(Collectors.toList())
@@ -126,7 +125,7 @@ public class ElementUserController {
 	}
 	
 	@RequestMapping(
-			path="/smartspace/elements/{userSmartspace}/{userEmail}?search=type&value={type}&spage={page}&size={size}",
+			path="/smartspace/elements/{userSmartspace}/{userEmail}?search=type&value={type}&page={page}&size={size}",
 			method=RequestMethod.GET,
 			produces=MediaType.APPLICATION_JSON_VALUE)
 	public ElementBoundary[] getElementsUsingPaginationOfSpecifiedType (
@@ -137,7 +136,7 @@ public class ElementUserController {
 			@RequestParam(name="page", required=false, defaultValue="0") int page) {
 		return 
 				this.elementsService
-				.getElementsUsingPaginationOfSpecifiedType(userSmartspace, userEmail, type, size, page, null)
+				.getElementsUsingPaginationOfSpecifiedType(userSmartspace, userEmail, null, type, size, page)
 				.stream()
 				.map(ElementBoundary::new)
 				.collect(Collectors.toList())

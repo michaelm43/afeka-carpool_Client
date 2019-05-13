@@ -41,5 +41,4 @@ public class UserUsersServiceImpl implements UserUsersService{
 		}
 		this.userDao.update(user);
 	}
-
 }

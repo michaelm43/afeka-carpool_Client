@@ -25,7 +25,6 @@ import smartspace.dao.EnhancedActionDao;
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
-import smartspace.infra.ActionsService;
 import smartspace.layout.ActionBoundary;
 import smartspace.layout.ElementBoundary;
 import smartspace.layout.Key;
@@ -42,18 +41,12 @@ public class ActionControllerIntegrationTest {
 	private RestTemplate restTemplate;
 	private EnhancedActionDao actionDao;
 	private EnhancedUserDao<String> userDao;
-	private ActionsService actionService;
 
 	
 	@Value("${smartspace.name}")
 	private String appSmartspace;
 	private String adminEmail = "admin@admin";
 	
-	
-	@Autowired
-	public void setActionService(ActionsService actionService) {
-		this.actionService = actionService;
-	}
 	
 	@Autowired
 	public void setActionDao(EnhancedActionDao actionDao) {

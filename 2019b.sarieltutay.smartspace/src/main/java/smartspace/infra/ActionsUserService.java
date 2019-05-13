@@ -7,5 +7,5 @@ import smartspace.data.UserRole;
 
 public interface ActionsUserService {
 	
-	public Map<String,Object> invokeAction(ActionEntity action,String smartspace,String email ,UserRole role);
+	public Map<String,Object> invokeAction(String smartspace,String email ,UserRole role,ActionEntity action);
 }

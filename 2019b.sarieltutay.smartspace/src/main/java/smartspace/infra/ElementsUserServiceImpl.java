@@ -1,5 +1,6 @@
 package smartspace.infra;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class ElementsUserServiceImpl implements ElementsUserService {
 	@Override
 	@Transactional
 	@CheckRoleOfUser
-	public ElementEntity newElement(ElementEntity element, String userSmartspace, String userEmail, UserRole role) {
+	public ElementEntity newElement(String userSmartspace, String userEmail,UserRole role, ElementEntity element) {
 		if (role == UserRole.MANAGER || role == UserRole.PLAYER) {
 			if (valiadate(element)) {
 				element.setCreationTimestamp(new Date());
@@ -49,13 +50,9 @@ public class ElementsUserServiceImpl implements ElementsUserService {
 	@Override
 	@Transactional
 	@CheckRoleOfUser
-	public void setElement(String userSmartspace, String userEmail, String elementSmartspace, String elementId, // TODO
-																												// what
-																												// to do
-																												// with
-																												// the
-																												// smartspace?
-			ElementEntity element, UserRole role) {
+	public void setElement(String userSmartspace, String userEmail, UserRole role, String elementSmartspace, String elementId,
+			ElementEntity element) // TODO what to do with the smartspace?
+			 {
 
 		if (role == UserRole.MANAGER || role == UserRole.PLAYER) {
 			if (valiadate(element)) { // TODO should we check the validate?!
@@ -73,8 +70,8 @@ public class ElementsUserServiceImpl implements ElementsUserService {
 
 	@Override
 	@CheckRoleOfUser
-	public ElementEntity getSpecificElement(String userSmartspace, String userEmail, String elementSmartspace,
-			String elementId, UserRole role) {
+	public ElementEntity getSpecificElement(String userSmartspace, String userEmail, UserRole role, String elementSmartspace,
+			String elementId) {
 
 		if (role == UserRole.MANAGER) {
 			return this.elementDao.readById(elementId)
@@ -92,8 +89,8 @@ public class ElementsUserServiceImpl implements ElementsUserService {
 
 	@Override
 	@CheckRoleOfUser
-	public List<ElementEntity> getElementsUsingPagination(String userSmartspace, String userEmail, int size, int page,
-			UserRole role) {
+	public List<ElementEntity> getElementsUsingPagination(String userSmartspace, String userEmail,
+			UserRole role, int size, int page) {
 
 		if (role == UserRole.MANAGER) {
 			return this.elementDao.readAll(size, page);
@@ -107,8 +104,8 @@ public class ElementsUserServiceImpl implements ElementsUserService {
 
 	@Override
 	@CheckRoleOfUser
-	public List<ElementEntity> getElementsUsingPaginationOfLocation(String userSmartspace, String userEmail, int x,
-			int y, int distance, int size, int page, UserRole role) {
+	public List<ElementEntity> getElementsUsingPaginationOfLocation(String userSmartspace, String userEmail, UserRole role,
+			int x, int y, int distance, int size, int page) {
 
 		if (role == UserRole.MANAGER) {
 			return this.elementDao.readAllUsingLocation(x, y, distance, size, page);
@@ -122,8 +119,8 @@ public class ElementsUserServiceImpl implements ElementsUserService {
 
 	@Override
 	@CheckRoleOfUser
-	public List<ElementEntity> getElementsUsingPaginationOfName(String userSmartspace, String userEmail, String name,
-			int size, int page, UserRole role) {
+	public Collection<ElementEntity> getElementsUsingPaginationOfName(String userSmartspace, String userEmail, UserRole role,
+			String name, int size, int page) {
 
 		if (role == UserRole.MANAGER) {
 			return this.elementDao.readAllUsingName(name, size, page);
@@ -137,8 +134,8 @@ public class ElementsUserServiceImpl implements ElementsUserService {
 
 	@Override
 	@CheckRoleOfUser
-	public List<ElementEntity> getElementsUsingPaginationOfSpecifiedType(String userSmartspace, String userEmail,
-			String type, int size, int page, UserRole role) {
+	public List<ElementEntity> getElementsUsingPaginationOfSpecifiedType(String userSmartspace, String userEmail, UserRole role,
+			String type, int size, int page) {
 
 		if (role == UserRole.MANAGER) {
 			return this.elementDao.readAllUsingType(type, size, page);

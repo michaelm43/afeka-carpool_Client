@@ -3,7 +3,6 @@ package smartspace.dao;
 import java.util.List;
 
 import smartspace.data.ActionEntity;
-import smartspace.data.ElementEntity;
 
 public interface EnhancedActionDao extends ActionDao{
 	public List<ActionEntity> readAll(int size, int page);

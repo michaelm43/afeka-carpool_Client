@@ -26,7 +26,7 @@ public class ActionsUserServiceImpl implements ActionsUserService{
 	@Override
 	@Transactional
 	@CheckRoleOfUser
-	public Map<String,Object> invokeAction(ActionEntity action,String smartspace,String email ,UserRole role) {
+	public Map<String,Object> invokeAction(String smartspace,String email ,UserRole role,ActionEntity action) {
 		
 		if(role == UserRole.ADMIN) {
 			throw new RuntimeException("The URl isn't match for manager or player. use another user or URL that match admin user");	
