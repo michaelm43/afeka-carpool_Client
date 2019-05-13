@@ -24,7 +24,6 @@ public class ElementUserController {
 		this.elementsService = elementService;
 	}
 	
-	
 
 	@RequestMapping(
 			path="/smartspace/elements/{userSmartspace}/{userEmail}",

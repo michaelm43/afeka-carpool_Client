@@ -144,4 +144,46 @@ public class RdbElementDao implements EnhancedElementDao<String> {
 		return this.elementCrud.save(entity);
 	}
 
+	@Override
+	public List<ElementEntity> readAllNotExpierd(int size, int page) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ElementEntity> readAllUsingLocation(int x, int y, int distance, int size, int page) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ElementEntity> readAllUsingLocationNotExpired(int x, int y, int distance, int size, int page) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ElementEntity> readAllUsingName(String name, int size, int page) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ElementEntity> readAllUsingNameNotExpired(String name, int size, int page) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ElementEntity> readAllUsingType(String type, int size, int page) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ElementEntity> readAllUsingTypeNotExpired(String type, int size, int page) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

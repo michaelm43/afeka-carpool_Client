@@ -126,6 +126,12 @@ public class ActionBoundary {
 		return "ActionBoundary [actionKey=" + actionKey + ", type=" + type + ", created=" + created + ", element="
 				+ element + ", player=" + player + ", properties=" + properties + "]";
 	}
+
+
+	public void convertToMap() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 }
