@@ -1,8 +1,5 @@
 package smartspace.layout;
 
-import org.springframework.beans.factory.annotation.Value;
-
-import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
 
 public class UserForm {
@@ -10,12 +7,6 @@ public class UserForm {
 	private UserRole role;
 	private String username;
 	private String avatar;
-	private String smartspace;
-	
-	@Value("${smartspace.name}")
-	public void setSmartspace(String smartspace) {
-		this.smartspace = smartspace;
-	}
 	
 	public UserForm() {
 	}
@@ -59,8 +50,5 @@ public class UserForm {
 		this.avatar = avatar;
 	}
 	
-	public UserEntity convertToUserEntity(){
-		return new UserEntity(smartspace,email,username,avatar,role,0);
-	}
 }
 

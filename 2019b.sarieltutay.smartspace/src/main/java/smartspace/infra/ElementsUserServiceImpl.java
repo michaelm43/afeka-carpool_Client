@@ -31,7 +31,7 @@ public class ElementsUserServiceImpl implements ElementsUserService {
 	@Transactional
 	@CheckRoleOfUser
 	public ElementEntity newElement(String userSmartspace, String userEmail,UserRole role, ElementEntity element) {
-		if (role == UserRole.MANAGER || role == UserRole.PLAYER) {
+		if (role == UserRole.MANAGER) {
 			if (valiadate(element)) {
 				element.setCreationTimestamp(new Date());
 				this.elementDao.createImportAction(element);
@@ -39,9 +39,13 @@ public class ElementsUserServiceImpl implements ElementsUserService {
 				throw new RuntimeException("invalid element");
 		}
 
+		else if(role == UserRole.PLAYER){
+			throw new RuntimeException(
+					"Player can't post an element");
+		}
 		else {
 			throw new RuntimeException(
-					"The URl isn't match for manager or player. use another user or URL that match admin user");
+					"The URl isn't match for manager. use manager user or URL that match the admin user");
 		}
 
 		return element;
@@ -53,18 +57,20 @@ public class ElementsUserServiceImpl implements ElementsUserService {
 	public void setElement(String userSmartspace, String userEmail, UserRole role, String elementSmartspace, String elementId,
 			ElementEntity element) // TODO what to do with the smartspace?
 			 {
-
-		if (role == UserRole.MANAGER || role == UserRole.PLAYER) {
-			if (valiadate(element)) { // TODO should we check the validate?!
-				element.setCreationTimestamp(new Date()); // TODO should we change the Timestamp?
-				this.elementDao.update(element);
-			} else
-				throw new RuntimeException("invalid element");
+		if (role == UserRole.MANAGER) {
+			element.setElementId(elementId);
+			element.setElementSmartspace(elementSmartspace);
+			element.setCreationTimestamp(new Date()); 
+			this.elementDao.update(element);
 		}
 
+		else if(role == UserRole.PLAYER){
+			throw new RuntimeException(
+					"Player can't Update an element");
+		}
 		else {
 			throw new RuntimeException(
-					"The URl isn't match for manager or player. use another user or URL that match admin user");
+					"The URl isn't match for manager. use manager user or URL that match the admin user");
 		}
 	}
 

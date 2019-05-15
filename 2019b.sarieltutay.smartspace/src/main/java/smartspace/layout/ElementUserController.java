@@ -26,7 +26,7 @@ public class ElementUserController {
 	
 
 	@RequestMapping(
-			path="/smartspace/elements/{userSmartspace}/{userEmail}",
+			path="/smartspace/elements/{managerSmartspace}/{managerEmail}",
 			method=RequestMethod.POST,
 			consumes=MediaType.APPLICATION_JSON_VALUE,
 			produces=MediaType.APPLICATION_JSON_VALUE)
@@ -39,7 +39,7 @@ public class ElementUserController {
 
 
 	@RequestMapping(
-			path="/smartspace/elements/{userSmartspace}/{userEmail}/{elementSmartspace}/{elementId}",
+			path="/smartspace/elements/{managerSmartspace}/{managerEmail}/{elementSmartspace}/{elementId}",
 			method=RequestMethod.PUT,
 			produces=MediaType.APPLICATION_JSON_VALUE)
 	public void patchElement (

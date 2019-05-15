@@ -3,15 +3,23 @@ package smartspace.infra;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import smartspace.aop.CheckRoleOfUser;
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
+import smartspace.layout.UserForm;
 
 public class UserUsersServiceImpl implements UserUsersService{
 
 	private EnhancedUserDao<String> userDao;
+	private String smartspace;
+	
+	@Value("${smartspace.name}")
+	public void setSmartspace(String smartspace) {
+		this.smartspace = smartspace;
+	}
 	
 	@Autowired	
 	public UserUsersServiceImpl(EnhancedUserDao<String> userDao) {
@@ -40,5 +48,15 @@ public class UserUsersServiceImpl implements UserUsersService{
 			user.setPoints(0);
 		}
 		this.userDao.update(user);
+	}
+
+	public UserEntity convertToUserEntity(UserForm newUser) {
+		return new UserEntity(
+				this.smartspace,
+				newUser.getEmail(),
+				newUser.getUsername(),
+				newUser.getAvatar(),
+				newUser.getRole(),
+				0);
 	}
 }

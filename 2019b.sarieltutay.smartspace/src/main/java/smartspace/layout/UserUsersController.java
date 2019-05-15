@@ -28,7 +28,7 @@ public class UserUsersController {
 			produces=MediaType.APPLICATION_JSON_VALUE)
 	public UserBoundary newElement (
 			@RequestBody UserForm newUser) {		
-			return new UserBoundary(this.userService.newUser(newUser.convertToUserEntity()));	
+			return new UserBoundary(this.userService.newUser(userService.convertToUserEntity(newUser)));	
 			}
 	
 	@RequestMapping(
