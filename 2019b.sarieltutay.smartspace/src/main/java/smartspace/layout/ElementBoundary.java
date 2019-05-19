@@ -40,8 +40,8 @@ public class ElementBoundary {
 				String[] args = entity.getKey().split("=");
 				if (args.length == 2) {
 					this.key = new Key();
-					this.key.setId(args[0]);
-					this.key.setSmartspace(args[1]);
+					this.key.setSmartspace(args[0]);
+					this.key.setId(args[1]);
 				}
 			} else
 				this.key = null;

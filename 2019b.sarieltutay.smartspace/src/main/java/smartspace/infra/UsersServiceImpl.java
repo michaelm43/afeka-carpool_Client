@@ -47,7 +47,7 @@ public class UsersServiceImpl implements UsersService {
 				if(this.smartspace.equals(user.getUserSmartspace()))
 					throw new RuntimeException("user smartspace must be different then the local project");
 			}
-			this.userDao.createImportAction(user);//change to create from import
+			this.userDao.createfromImport(user);
 			users_entities.add(user);			
 		}
 		

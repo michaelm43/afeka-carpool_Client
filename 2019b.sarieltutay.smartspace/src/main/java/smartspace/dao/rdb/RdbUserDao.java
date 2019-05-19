@@ -117,7 +117,7 @@ public class RdbUserDao implements EnhancedUserDao<String> {
 
 	@Override
 	@Transactional
-	public UserEntity createImportAction(UserEntity entity) {
+	public UserEntity createfromImport(UserEntity entity) {
 		return this.userCrud.save(entity);
 	}
 	

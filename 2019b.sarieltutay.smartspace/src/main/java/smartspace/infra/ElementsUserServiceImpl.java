@@ -34,7 +34,7 @@ public class ElementsUserServiceImpl implements ElementsUserService {
 		if (role == UserRole.MANAGER) {
 			if (valiadate(element)) {
 				element.setCreationTimestamp(new Date());
-				this.elementDao.createImportAction(element);
+				this.elementDao.createfromImport(element);
 			} else
 				throw new RuntimeException("invalid element");
 		}
