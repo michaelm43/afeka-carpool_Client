@@ -33,7 +33,8 @@ public class ElementsUserServiceImpl implements ElementsUserService {
 	public ElementEntity newElement(String userSmartspace, String userEmail,UserRole role, ElementEntity element) {
 		if (role == UserRole.MANAGER) {
 			if (valiadate(element)) {
-				element.setCreationTimestamp(new Date());
+				//do delete//
+				//element.setCreationTimestamp(new Date());
 				this.elementDao.createfromImport(element);
 			} else
 				throw new RuntimeException("invalid element");

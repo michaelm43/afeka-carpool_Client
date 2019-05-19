@@ -31,9 +31,10 @@ public class RdbUserDao implements EnhancedUserDao<String> {
 	public UserEntity create(UserEntity userEntity) {
 		if (userEntity != null) {
 			if (!this.userCrud.existsById(userEntity.getKey())) {
-				GenericIdGenerator nextId = this.genericIdGeneratorCrud.save(new GenericIdGenerator());
-				userEntity.setKey(userEntity.getUserSmartspace() + "=" + nextId.getId());
-				this.genericIdGeneratorCrud.delete(nextId);
+				
+				//GenericIdGenerator nextId = this.genericIdGeneratorCrud.save(new GenericIdGenerator());
+				userEntity.setKey(userEntity.getUserSmartspace() + "=" + userEntity.getUserEmail());
+				//this.genericIdGeneratorCrud.delete(nextId);
 				if (userCrud != null) {
 					if (!this.userCrud.existsById(userEntity.getKey())) {
 						UserEntity rv = this.userCrud.save(userEntity);

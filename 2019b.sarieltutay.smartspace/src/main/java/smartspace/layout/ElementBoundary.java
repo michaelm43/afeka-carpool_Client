@@ -21,6 +21,7 @@ public class ElementBoundary {
 
 	}
 	
+	
 	public ElementBoundary(String elementType, String name, boolean expired, UserForBoundary creator,
 			LocationForBoundary latlng, Map<String, Object> elementProperties) {
 		super();

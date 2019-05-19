@@ -36,7 +36,7 @@ public class UsersServiceImpl implements UsersService {
 	public List<UserEntity> newUsers(List<UserEntity> users, String adminSmartspace, String adminEmail) {
 		List<UserEntity> users_entities = new ArrayList<UserEntity>();
 		//check local admin
-		if (!(this.smartspace.equals(adminSmartspace)) || !(valiadete_admin(adminSmartspace, adminEmail))) {
+		if (!(valiadete_admin(adminSmartspace, adminEmail))) {
 			throw new RuntimeException("user are not allowed to create actions");
 		}
 		
@@ -78,7 +78,7 @@ public class UsersServiceImpl implements UsersService {
 	@Override
 	public List<UserEntity> getUsersUsingPagination(String adminSmartspace, String adminEmail, int size,
 			int page) {
-		if(!(this.smartspace.equals(adminSmartspace)) || !(valiadete_admin(adminSmartspace, adminEmail)))
+		if(!(valiadete_admin(adminSmartspace, adminEmail)))
 			throw new RuntimeException("user are not allowed to get users");
 		else
 			return this.userDao
