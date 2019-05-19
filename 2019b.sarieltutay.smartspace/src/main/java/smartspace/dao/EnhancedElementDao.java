@@ -8,7 +8,7 @@ public interface EnhancedElementDao<Key> extends ElementDao<Key> {
 	public List<ElementEntity> readAll(int size, int page);
 	public List<ElementEntity> readAll(String sortBy, int size, int page);
 	public List<ElementEntity> readMessageWithSmartspaceContaining (String smartspace, int size, int page);
-	public ElementEntity createfromImport(ElementEntity entity);
+	public ElementEntity createImportAction(ElementEntity entity);
 	public List<ElementEntity> readAllNotExpierd(int size, int page);
 	public List<ElementEntity> readAllUsingLocation(int x, int y, int distance, int size, int page);
 	public List<ElementEntity> readAllUsingLocationNotExpired(int x, int y, int distance, int size, int page);

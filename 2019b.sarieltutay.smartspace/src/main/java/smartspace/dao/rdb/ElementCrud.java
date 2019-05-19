@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 
 
 import smartspace.data.ElementEntity;
-import smartspace.data.Location;
 
 public interface ElementCrud extends PagingAndSortingRepository<ElementEntity, String> {
 	public List<ElementEntity> findAllByNameLike(
@@ -23,14 +22,16 @@ public interface ElementCrud extends PagingAndSortingRepository<ElementEntity, S
 			@Param("name") String name, @Param("expired") boolean expired,
 			Pageable pageable);
 	
-	public List<ElementEntity> findAllByLocationBetween(
-			@Param("locationmin") Location locationmin, @Param("locationmax") Location locationmax, 
+	public List<ElementEntity> findAllByLocation_XBetweenAndLocation_YBetween(
+			@Param("xmin") int xmin, @Param("xmax") int xman, 
+			@Param("ymin") int ymin, @Param("ymax") int yman, 
 			Pageable pageable);
 
 	public List<ElementEntity> findAllByExpired(@Param("expired") boolean expired, Pageable pageable);
 	
-	public List<ElementEntity> findAllByExpiredAndLocationBetween(@Param("expired") boolean expired,
-			@Param("locationmin") Location locationmin, @Param("locationmax") Location locationmax,
+	public List<ElementEntity> findAllByExpiredAndLocation_XBetweenAndLocation_YBetween(@Param("expired") boolean expired,
+			@Param("xmin") int xmin, @Param("xmax") int xman, 
+			@Param("ymin") int ymin, @Param("ymax") int yman, 
 			Pageable pageable);
 	
 	public List<ElementEntity> findAllByType(@Param("type") String type, Pageable pageable);

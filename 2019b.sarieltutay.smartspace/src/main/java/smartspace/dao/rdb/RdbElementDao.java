@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import smartspace.dao.EnhancedElementDao;
 import smartspace.data.ElementEntity;
-import smartspace.data.Location;
 
 @Repository
 public class RdbElementDao implements EnhancedElementDao<String> {
@@ -141,7 +140,7 @@ public class RdbElementDao implements EnhancedElementDao<String> {
 
 	@Override
 	@Transactional
-	public ElementEntity createfromImport(ElementEntity entity) {
+	public ElementEntity createImportAction(ElementEntity entity) {
 		return this.elementCrud.save(entity);
 	}
 
@@ -152,14 +151,14 @@ public class RdbElementDao implements EnhancedElementDao<String> {
 
 	@Override
 	public List<ElementEntity> readAllUsingLocation(int x, int y, int distance, int size, int page) {
-		return this.elementCrud.findAllByLocationBetween(new Location(x,y), 
-				new Location(x+distance,y+distance), PageRequest.of(page, size));
+		return this.elementCrud.findAllByLocation_XBetweenAndLocation_YBetween(x-distance, x+distance,
+				y-distance, y+distance, PageRequest.of(page, size));
 	}
 
 	@Override
 	public List<ElementEntity> readAllUsingLocationNotExpired(int x, int y, int distance, int size, int page) {
-		return this.elementCrud.findAllByExpiredAndLocationBetween(false, new Location(x,y), 
-				new Location(x+distance,y+distance), PageRequest.of(page, size));
+		return this.elementCrud.findAllByExpiredAndLocation_XBetweenAndLocation_YBetween(false, x-distance, x+distance, 
+				y-distance, y+distance, PageRequest.of(page, size));
 	}
 
 	@Override
@@ -181,4 +180,5 @@ public class RdbElementDao implements EnhancedElementDao<String> {
 	public List<ElementEntity> readAllUsingTypeNotExpired(String type, int size, int page) {
 		return this.elementCrud.findAllByExpiredAndType(false, type, PageRequest.of(page, size));
 	}
+
 }
