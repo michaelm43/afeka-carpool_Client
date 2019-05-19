@@ -37,7 +37,7 @@ public class ElementsUserServiceImpl implements ElementsUserService {
 			if (valiadate(element)) {
 				//do delete//
 				//element.setCreationTimestamp(new Date());
-				this.elementDao.createfromImport(element);
+				this.elementDao.createImportAction(element);
 			} else
 				throw new RuntimeException("invalid element");
 		}

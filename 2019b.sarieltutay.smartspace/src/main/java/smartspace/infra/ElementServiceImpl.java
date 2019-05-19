@@ -46,7 +46,7 @@ public class ElementServiceImpl implements ElementsService {
 			if (valiadate(element)) {
 				if (!(this.smartspace.equals(element.getElementSmartspace()))) {
 					/////////element.setCreationTimestamp(new Date());//need??
-					this.elementDao.createfromImport(element);//??
+					this.elementDao.createImportAction(element);//??
 					elements_entities.add(element);
 				} else
 					throw new RuntimeException("element smartspace must be different then the local project");
