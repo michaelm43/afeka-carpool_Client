@@ -29,7 +29,7 @@ public class ActionsUserServiceImpl implements ActionsUserService{
 	
 	@Override
 	@Transactional
-	@CheckRoleOfUser
+//	@CheckRoleOfUser
 	public Map<String,Object> invokeAction(String smartspace,String email ,UserRole role,ActionEntity action) {
 		if(role == UserRole.PLAYER) {
 			switch(action.getActionType()) {

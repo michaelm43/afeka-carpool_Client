@@ -43,7 +43,7 @@ public class UserUsersServiceImpl implements UserUsersService{
 	}
 
 	@Override
-	@CheckRoleOfUser
+//	@CheckRoleOfUser
 	@Transactional
 	public void updateUser(UserEntity user, String userSmartspace, String userEmail,UserRole role) {
 		if(user.getRole() == UserRole.PLAYER && role != UserRole.PLAYER) {

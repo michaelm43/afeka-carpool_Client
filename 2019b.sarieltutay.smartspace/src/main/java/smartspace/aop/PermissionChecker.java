@@ -3,6 +3,7 @@ package smartspace.aop;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,10 @@ import smartspace.dao.EnhancedUserDao;
 import smartspace.data.UserRole;
 
 
-@Component
+//@Component
 @Aspect
 public class PermissionChecker {
-	Log logger = LogFactory.getLog(CheckRoleOfUser.class);
+//	Log logger = LogFactory.getLog(CheckRoleOfUser.class);
 	private EnhancedUserDao<String> userDao;
 	
 	@Autowired
@@ -25,17 +26,18 @@ public class PermissionChecker {
 	}
 	
 	
-	@Before("@annotation(smartspace.aop.CheckRoleOfUser) && args(userSmartspace,userEmail,role..)")
+	@Around("@annotation(smartspace.aop.CheckRoleOfUser) && args(userSmartspace,userEmail,role..)")
 	public void checkRoll(ProceedingJoinPoint pjp, String smartspace, String email, UserRole role) throws Throwable {
 		// before
 		String method = pjp.getSignature().getName();
 		String fullyQualifiedClassName = pjp.getTarget().getClass().getName();
+		Object[] args = pjp.getArgs();
 		
-		role = userDao.readUserUsingSmartspaceAndEmail(smartspace, email).getRole();
+		args[2] = userDao.readUserUsingSmartspaceAndEmail(smartspace, email).getRole();
 		
-		logger.debug("********* " + fullyQualifiedClassName + "." + method + "(" + smartspace + ","+ email + ","+ role + ",.....)" + role);
-
-		pjp.proceed(new Object[] {smartspace,email,role});			//TODO this is how to do it?!
+//		logger.debug("********* " + fullyQualifiedClassName + "." + method + "(" + smartspace + ","+ email + ","+ role + ",.....)" + role);
+		
+		pjp.proceed(args);			//TODO this is how to do it?!
 		
 	}	
 }
