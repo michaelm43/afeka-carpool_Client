@@ -39,15 +39,15 @@ public class ElementServiceImpl implements ElementsService {
 	@Transactional
 	public List<ElementEntity> newElements(List<ElementEntity> elements, String adminSmartspace, String adminEmail) {
 		List<ElementEntity> elements_entities = new ArrayList<ElementEntity>();
-	//	if (!(this.smartspace.equals(adminSmartspace)) || !valiadete_admin(adminSmartspace, adminEmail)) {
+	//	if (!valiadete_admin(adminSmartspace, adminEmail)) {
 	//		throw new RuntimeException("user are not allowed to create elements");
 	//	}
 
 		for (ElementEntity element : elements) {
 			if (valiadate(element)) {
 				if (!(this.smartspace.equals(element.getElementSmartspace()))) {
-					element.setCreationTimestamp(new Date());//need??
-					this.elementDao.createImportAction(element);//??
+					/////////element.setCreationTimestamp(new Date());//need??
+					this.elementDao.createfromImport(element);//??
 					elements_entities.add(element);
 				} else
 					throw new RuntimeException("element smartspace must be different then the local project");
@@ -81,7 +81,7 @@ public class ElementServiceImpl implements ElementsService {
 	@Override
 	public List<ElementEntity> getElementsUsingPagination(String adminSmartspace, String adminEmail, int size,
 			int page) {
-		if (!(this.smartspace.equals(adminSmartspace)) || !(valiadete_admin(adminSmartspace, adminEmail)))
+		if (!(valiadete_admin(adminSmartspace, adminEmail)))
 			throw new RuntimeException("user are not allowed to get elements");
 		else
 			return this.elementDao.readAll("creationTimestamp", size, page);// key?????

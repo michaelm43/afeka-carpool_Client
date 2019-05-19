@@ -44,7 +44,7 @@ public class ActionsServiceImpl implements ActionsService {
 			String adminEmail) {
 		List<ActionEntity> actions_entities = new ArrayList<ActionEntity>();
 		//check local admin
-		if (!(this.smartspace.equals(adminSmartspace)) || !(valiadete_admin(adminSmartspace, adminEmail))) {
+		if (!(valiadete_admin(adminSmartspace, adminEmail))) {
 			throw new RuntimeException("user are not allowed to create actions");
 		}
 		
@@ -60,7 +60,7 @@ public class ActionsServiceImpl implements ActionsService {
 						throw new RuntimeException("action element must be imported in advance");	
 				}
 			}
-			action.setCreationTimestamp(new Date());
+			//action.setCreationTimestamp(new Date());
 			this.actionDao.createImportAction(action);
 			actions_entities.add(action);
 		}
@@ -103,7 +103,7 @@ public class ActionsServiceImpl implements ActionsService {
 	@Override
 	public List<ActionEntity> getActionsUsingPagination(String adminSmartspace, String adminEmail, int size,
 			int page) {
-		if(!(this.smartspace.equals(adminSmartspace)) || !(valiadete_admin(adminSmartspace, adminEmail)))
+		if(!(valiadete_admin(adminSmartspace, adminEmail)))
 			throw new RuntimeException("user are not allowed to get actions");
 		else
 			return this.actionDao

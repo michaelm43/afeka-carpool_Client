@@ -18,8 +18,8 @@ public class ActionBoundary {
 		this.element = new Key();
 		this.player=new UserForBoundary();
 	}
-	
-	
+
+
 	public ActionBoundary(String type, Key element, UserForBoundary player, Map<String, Object> properties) {
 		super();
 		this.type = type;

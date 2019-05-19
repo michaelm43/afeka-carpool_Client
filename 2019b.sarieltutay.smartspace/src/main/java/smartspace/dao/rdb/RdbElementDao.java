@@ -141,7 +141,7 @@ public class RdbElementDao implements EnhancedElementDao<String> {
 
 	@Override
 	@Transactional
-	public ElementEntity createImportAction(ElementEntity entity) {
+	public ElementEntity createfromImport(ElementEntity entity) {
 		return this.elementCrud.save(entity);
 	}
 
