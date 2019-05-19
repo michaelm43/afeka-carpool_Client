@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import smartspace.aop.CheckRoleOfUser;
 import smartspace.dao.EnhancedElementDao;
@@ -15,6 +16,7 @@ import smartspace.dao.EnhancedUserDao;
 import smartspace.data.ElementEntity;
 import smartspace.data.UserRole;
 
+@Service
 public class ElementsUserServiceImpl implements ElementsUserService {
 
 	private EnhancedElementDao<String> elementDao;

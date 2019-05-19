@@ -4,6 +4,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import smartspace.aop.CheckRoleOfUser;
 import smartspace.dao.EnhancedUserDao;
@@ -11,6 +12,7 @@ import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
 import smartspace.layout.UserForm;
 
+@Service
 public class UserUsersServiceImpl implements UserUsersService{
 
 	private EnhancedUserDao<String> userDao;
