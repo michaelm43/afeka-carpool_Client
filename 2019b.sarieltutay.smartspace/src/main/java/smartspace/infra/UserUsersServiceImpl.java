@@ -46,7 +46,7 @@ public class UserUsersServiceImpl implements UserUsersService{
 	@Override
 	@CheckRoleOfUser
 	@Transactional
-	public void updateUser(UserEntity user, String userSmartspace, String userEmail,UserRole role) {
+	public void updateUser(String userSmartspace, String userEmail,UserRole role,UserEntity user) {
 		if(user.getRole() == UserRole.PLAYER && role != UserRole.PLAYER) {
 			user.setPoints(0);
 		}

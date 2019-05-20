@@ -9,5 +9,5 @@ public interface UserUsersService {
 	
 	public UserEntity getUser(String userSmartspace, String userEmail);
 	
-	public void updateUser(UserEntity entity, String userSmartspace, String userEmail,UserRole role);
+	public void updateUser(String userSmartspace, String userEmail,UserRole role,UserEntity entity);
 }

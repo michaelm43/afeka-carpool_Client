@@ -51,6 +51,6 @@ public class UserUsersController {
 			@RequestBody UserBoundary user,
 			@PathVariable("userSmartspace") String userSmartspace, 
 			@PathVariable("userEmail") String userEmail) {		
-			this.userService.updateUser(user.convertToEntity(),userSmartspace,userEmail,null);	
+			this.userService.updateUser(userSmartspace,userEmail,null,user.convertToEntity());	
 			}
 }
