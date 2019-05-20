@@ -59,7 +59,6 @@ public class ActionsServiceImpl implements ActionsService {
 						throw new RuntimeException("action element must be imported in advance");	
 				}
 			}
-			//action.setCreationTimestamp(new Date());
 			this.actionDao.createImportAction(action);
 			actions_entities.add(action);
 		}

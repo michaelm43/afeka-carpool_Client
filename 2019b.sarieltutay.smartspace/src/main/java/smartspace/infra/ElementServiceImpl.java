@@ -45,7 +45,7 @@ public class ElementServiceImpl implements ElementsService {
 		for (ElementEntity element : elements) {
 			if (valiadate(element)) {
 				if (!(this.smartspace.equals(element.getElementSmartspace()))) {
-					/////////element.setCreationTimestamp(new Date());//need??
+
 					this.elementDao.createImportAction(element);//??
 					elements_entities.add(element);
 				} else

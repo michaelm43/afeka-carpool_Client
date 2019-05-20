@@ -84,5 +84,4 @@ public class UsersServiceImpl implements UsersService {
 			return this.userDao
 					.readAll("username", size, page);
 	}
-
 }

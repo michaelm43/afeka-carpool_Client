@@ -7,7 +7,6 @@ import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +15,7 @@ import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
 
 
-//@Component
+@Component
 @Aspect
 public class PermissionChecker {
 //	Log logger = LogFactory.getLog(CheckRoleOfUser.class);
@@ -29,7 +28,7 @@ public class PermissionChecker {
 	}
 	
 	
-	@Around("@annotation(smartspace.aop.CheckRoleOfUser) && args(userSmartspace,userEmail,role..)")
+	@Around("@annotation(smartspace.aop.CheckRoleOfUser) && args(userSmartspace,userEmail,role,..)")
 	public Object checkRoll(ProceedingJoinPoint pjp, String userSmartspace, String userEmail, UserRole role) throws Throwable {
 		// before
 		String method = pjp.getSignature().getName();
@@ -37,8 +36,10 @@ public class PermissionChecker {
 		Object[] args = pjp.getArgs();
 		
 		Optional<UserEntity> user = this.userDao.readById(userSmartspace + "=" + userEmail);
-		
-		args[2] = user.get().getRole();
+		if(user.isPresent())
+			args[2] = user.get().getRole();
+		else
+			throw new RuntimeException("The user isn't excist");
 				
 //		logger.debug("********* " + fullyQualifiedClassName + "." + method + "(" + smartspace + ","+ email + ","+ role + ",.....)" + role);
 		Object rv;
@@ -48,7 +49,6 @@ public class PermissionChecker {
 		} catch (Exception e) {
 			throw e;
 		}
-	
 	}	
 }
 

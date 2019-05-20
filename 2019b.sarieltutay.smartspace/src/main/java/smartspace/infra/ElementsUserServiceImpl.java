@@ -1,7 +1,6 @@
 package smartspace.infra;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -33,7 +32,6 @@ public class ElementsUserServiceImpl implements ElementsUserService {
 		if (role == UserRole.MANAGER) {
 			if (valiadate(element)) {
 				//do delete//
-				//element.setCreationTimestamp(new Date());
 				this.elementDao.createImportAction(element);
 			} else
 				throw new RuntimeException("invalid element");
@@ -60,7 +58,6 @@ public class ElementsUserServiceImpl implements ElementsUserService {
 		if (role == UserRole.MANAGER) {
 			element.setElementId(elementId);
 			element.setElementSmartspace(elementSmartspace);
-			element.setCreationTimestamp(new Date()); 
 			this.elementDao.update(element);
 		}
 
