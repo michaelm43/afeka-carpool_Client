@@ -143,5 +143,3 @@ public class ElementUserController {
 				.toArray(new ElementBoundary[0]);
 	}
 }
-
-

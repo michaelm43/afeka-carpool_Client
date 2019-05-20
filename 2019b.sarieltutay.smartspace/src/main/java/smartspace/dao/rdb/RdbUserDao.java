@@ -17,13 +17,11 @@ import smartspace.data.UserEntity;
 public class RdbUserDao implements EnhancedUserDao<String> {
 
 	private UserCrud userCrud;
-	private GenericIdGeneratorCrud genericIdGeneratorCrud;
 
 	@Autowired
 	public RdbUserDao(UserCrud userCrud, GenericIdGeneratorCrud genericIdGeneratorCrud) {
 		super();
 		this.userCrud = userCrud;
-		this.genericIdGeneratorCrud = genericIdGeneratorCrud;
 	}
 
 	@Override
@@ -129,13 +127,6 @@ public class RdbUserDao implements EnhancedUserDao<String> {
 				.findAllByUserSmartspaceLike(
 						"%" + smartspace + "%",
 						PageRequest.of(page, size));
-	}
-
-	@Override
-	@Transactional(readOnly=true)
-	public UserEntity readUserUsingSmartspaceAndEmail(String smartspace, String email) {
-		return this.userCrud
-				.findByUserSmartspaceAndUserEmail(smartspace, email);
 	}
 	
 }

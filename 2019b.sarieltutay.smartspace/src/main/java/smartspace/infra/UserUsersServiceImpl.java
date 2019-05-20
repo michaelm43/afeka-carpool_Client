@@ -1,5 +1,6 @@
 package smartspace.infra;
 
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +40,11 @@ public class UserUsersServiceImpl implements UserUsersService{
 	
 	@Override
 	public UserEntity getUser(String smartspace, String email) {
-		return this.userDao.readUserUsingSmartspaceAndEmail(smartspace, email);
+		return this.userDao.readById(smartspace + "=" + email).get();
 	}
 
 	@Override
-//	@CheckRoleOfUser
+	@CheckRoleOfUser
 	@Transactional
 	public void updateUser(UserEntity user, String userSmartspace, String userEmail,UserRole role) {
 		if(user.getRole() == UserRole.PLAYER && role != UserRole.PLAYER) {

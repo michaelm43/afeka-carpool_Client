@@ -8,7 +8,7 @@ import smartspace.data.UserRole;
 
 public interface ElementsUserService {
 	
-	public ElementEntity newElement(String userSmartspace, String userEmail,UserRole role, ElementEntity element);
+	public ElementEntity newElement(String userSmartspace, String userEmail, UserRole role, ElementEntity element);
 	
 	public void setElement(String userSmartspace, String userEmail, UserRole role, String elementSmartspace, String elementId,
 			ElementEntity element);

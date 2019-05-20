@@ -7,7 +7,6 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import smartspace.aop.CheckRoleOfUser;
@@ -27,12 +26,10 @@ public class ElementsUserServiceImpl implements ElementsUserService {
 		this.elementDao = elementDao;
 	}
 
-	@Value("${smartspace.name}")
-
 	@Override
 	@Transactional
-//	@CheckRoleOfUser
-	public ElementEntity newElement(String userSmartspace, String userEmail,UserRole role, ElementEntity element) {
+	@CheckRoleOfUser
+	public ElementEntity newElement(String userSmartspace, String userEmail, UserRole role,ElementEntity element) {
 		if (role == UserRole.MANAGER) {
 			if (valiadate(element)) {
 				//do delete//
@@ -56,7 +53,7 @@ public class ElementsUserServiceImpl implements ElementsUserService {
 
 	@Override
 	@Transactional
-//	@CheckRoleOfUser
+	@CheckRoleOfUser
 	public void setElement(String userSmartspace, String userEmail, UserRole role, String elementSmartspace, String elementId,
 			ElementEntity element) // TODO what to do with the smartspace?
 			 {
@@ -78,7 +75,7 @@ public class ElementsUserServiceImpl implements ElementsUserService {
 	}
 
 	@Override
-//	@CheckRoleOfUser
+	@CheckRoleOfUser
 	public ElementEntity getSpecificElement(String userSmartspace, String userEmail, UserRole role, String elementSmartspace,
 			String elementId) {
 
@@ -97,7 +94,7 @@ public class ElementsUserServiceImpl implements ElementsUserService {
 	}
 
 	@Override
-//	@CheckRoleOfUser
+	@CheckRoleOfUser
 	public List<ElementEntity> getElementsUsingPagination(String userSmartspace, String userEmail,
 			UserRole role, int size, int page) {
 
@@ -112,7 +109,7 @@ public class ElementsUserServiceImpl implements ElementsUserService {
 	}
 
 	@Override
-//	@CheckRoleOfUser
+	@CheckRoleOfUser
 	public List<ElementEntity> getElementsUsingPaginationOfLocation(String userSmartspace, String userEmail, UserRole role,
 			int x, int y, int distance, int size, int page) {
 
@@ -127,7 +124,7 @@ public class ElementsUserServiceImpl implements ElementsUserService {
 	}
 
 	@Override
-//	@CheckRoleOfUser
+	@CheckRoleOfUser
 	public Collection<ElementEntity> getElementsUsingPaginationOfName(String userSmartspace, String userEmail, UserRole role,
 			String name, int size, int page) {
 
@@ -142,7 +139,7 @@ public class ElementsUserServiceImpl implements ElementsUserService {
 	}
 
 	@Override
-//	@CheckRoleOfUser
+	@CheckRoleOfUser
 	public List<ElementEntity> getElementsUsingPaginationOfSpecifiedType(String userSmartspace, String userEmail, UserRole role,
 			String type, int size, int page) {
 

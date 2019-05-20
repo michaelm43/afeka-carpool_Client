@@ -32,3 +32,4 @@ public class ActionUserController {
 		return actionService.invokeAction(action.getPlayer().getSmartspace(),action.getPlayer().getEmail(), null,action.convertToEntity());
 			}
 }
+

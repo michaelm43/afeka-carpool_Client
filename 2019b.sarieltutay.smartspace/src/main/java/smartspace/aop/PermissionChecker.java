@@ -1,5 +1,7 @@
 package smartspace.aop;
 
+import java.util.Optional;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import smartspace.dao.EnhancedUserDao;
+import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
 
 
@@ -27,18 +30,25 @@ public class PermissionChecker {
 	
 	
 	@Around("@annotation(smartspace.aop.CheckRoleOfUser) && args(userSmartspace,userEmail,role..)")
-	public void checkRoll(ProceedingJoinPoint pjp, String smartspace, String email, UserRole role) throws Throwable {
+	public Object checkRoll(ProceedingJoinPoint pjp, String userSmartspace, String userEmail, UserRole role) throws Throwable {
 		// before
 		String method = pjp.getSignature().getName();
 		String fullyQualifiedClassName = pjp.getTarget().getClass().getName();
 		Object[] args = pjp.getArgs();
 		
-		args[2] = userDao.readUserUsingSmartspaceAndEmail(smartspace, email).getRole();
+		Optional<UserEntity> user = this.userDao.readById(userSmartspace + "=" + userEmail);
 		
+		args[2] = user.get().getRole();
+				
 //		logger.debug("********* " + fullyQualifiedClassName + "." + method + "(" + smartspace + ","+ email + ","+ role + ",.....)" + role);
-		
-		pjp.proceed(args);			//TODO this is how to do it?!
-		
+		Object rv;
+		try {
+			rv = pjp.proceed(args);			//TODO this is how to do it?!
+			return rv;
+		} catch (Exception e) {
+			throw e;
+		}
+	
 	}	
 }
-	
+
