@@ -39,6 +39,9 @@ public class RdbUserDao implements EnhancedUserDao<String> {
 					}
 				}
 			}
+			else {
+				throw new RuntimeException("user already exists with key: " + userEntity.getKey());
+			}
 		} else
 			throw new RuntimeException("user cant be null");
 		return null;
@@ -83,7 +86,7 @@ public class RdbUserDao implements EnhancedUserDao<String> {
 		if (user.getUsername() != null) {
 			existing.setUsername(user.getUsername());
 		}
-
+		this.userCrud.save(existing);
 	}
 
 	@Override

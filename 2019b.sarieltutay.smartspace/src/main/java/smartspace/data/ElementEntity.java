@@ -3,21 +3,16 @@ package smartspace.data;
 import java.util.Date;
 import java.util.Map;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
-import smartspace.dao.rdb.MapToJsonConverter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name="ELEMENTS")
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
+@Document(collection="ELEMENTS")
 public class ElementEntity implements SmartspaceEntity<String> {
 
 	private String elementSmartspace;
@@ -30,6 +25,7 @@ public class ElementEntity implements SmartspaceEntity<String> {
 	private String creatorSmartspace;
 	private String creatorEmail;
 	private Map<String, Object> moreAttributes;
+	private String key;
 
 	public ElementEntity() {
 		this.creationTimestamp = new Date();
@@ -56,7 +52,8 @@ public class ElementEntity implements SmartspaceEntity<String> {
 		this.moreAttributes = moreAttributes;
 	}
 
-	@Transient
+//	@Transient
+	@JsonIgnore
 	public String getElementSmartspace() {
 		return elementSmartspace;
 	}
@@ -65,7 +62,8 @@ public class ElementEntity implements SmartspaceEntity<String> {
 		this.elementSmartspace = elementSmartspace;
 	}
 
-	@Transient
+//	@Transient
+	@JsonIgnore
 	public String getElementId() {
 		return elementId;
 	}
@@ -74,7 +72,7 @@ public class ElementEntity implements SmartspaceEntity<String> {
 		this.elementId = elementId;
 	}
 
-	@Embedded
+//	@Embedded
 	public Location getLocation() {
 		return location;
 	}
@@ -132,8 +130,8 @@ public class ElementEntity implements SmartspaceEntity<String> {
 		this.creatorEmail = creatorEmail;
 	}
 
-	@Lob
-	@Convert(converter=MapToJsonConverter.class)
+//	@Lob
+//	@Convert(converter=MapToJsonConverter.class)
 	public Map<String, Object> getMoreAttributes() {
 		return moreAttributes;
 	}
@@ -144,13 +142,13 @@ public class ElementEntity implements SmartspaceEntity<String> {
 
 	@Override
 	@Id
-	@Column(name="ID")
 	public String getKey() {
 		return this.elementSmartspace + "=" +  this.elementId;
 	}
 
 	@Override
 	public void setKey(String key) {
+		this.key = key;
 		String[] split = key.split("=");
 		if(split!=null & split.length==2) {
 			this.elementSmartspace = split[0];

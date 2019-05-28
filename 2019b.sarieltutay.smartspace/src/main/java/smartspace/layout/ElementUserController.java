@@ -32,8 +32,8 @@ public class ElementUserController {
 			produces=MediaType.APPLICATION_JSON_VALUE)
 	public ElementBoundary newElement (
 			@RequestBody ElementBoundary element, 
-			@PathVariable("userSmartspace") String userSmartspace, 
-			@PathVariable("userEmail") String userEmail) {		
+			@PathVariable("managerSmartspace") String userSmartspace, 
+			@PathVariable("managerEmail") String userEmail) {		
 		return new ElementBoundary(elementsService.newElement(userSmartspace, userEmail,null,element.convertToEntity()));		
 			}
 
@@ -43,8 +43,8 @@ public class ElementUserController {
 			method=RequestMethod.PUT,
 			produces=MediaType.APPLICATION_JSON_VALUE)
 	public void patchElement (
-			@PathVariable("userSmartspace") String userSmartspace, 
-			@PathVariable("userEmail") String userEmail,
+			@PathVariable("managerSmartspace") String userSmartspace, 
+			@PathVariable("managerEmail") String userEmail,
 			@PathVariable("elementSmartspace") String elementSmartspace,
 			@PathVariable("elementId") String elementId,
 			@RequestBody ElementBoundary element){

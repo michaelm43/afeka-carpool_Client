@@ -1,17 +1,15 @@
 package smartspace.data;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name="USERS")
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Document(collection="USERS")
 public class UserEntity implements SmartspaceEntity<String> {
 	private String userSmartspace;
 	private String userEmail;
@@ -19,6 +17,7 @@ public class UserEntity implements SmartspaceEntity<String> {
 	private String avatar;
 	private UserRole role;
 	private long points;
+	private String key;
 	
 	
 	public UserEntity(String userSmartspace, String userEmail, String username, String avatar, UserRole role,
@@ -40,7 +39,8 @@ public class UserEntity implements SmartspaceEntity<String> {
 		this.userEmail = userEmail;
 	}
 
-	@Transient
+//	@Transient
+	@JsonIgnore
 	public String getUserSmartspace() {
 		return userSmartspace;
 	}
@@ -53,7 +53,8 @@ public class UserEntity implements SmartspaceEntity<String> {
 
 
 
-	@Transient
+//	@Transient
+	@JsonIgnore
 	public String getUserEmail() {
 		return userEmail;
 	}
@@ -114,28 +115,40 @@ public class UserEntity implements SmartspaceEntity<String> {
 
 
 
+//	@Override
+//	@Id
+//	public String getKey() {
+//		return this.userSmartspace + "=" + this.userEmail;
+//	}
+
 	@Override
 	@Id
-	@Column(name="ID")
 	public String getKey() {
 		return this.userSmartspace + "=" + this.userEmail;
 	}
-
+	
 	@Override
 	public void setKey(String key) {		
+		this.key = key;
 		String[] split = key.split("=");
 		if(split!=null & split.length==2) {
 			this.userSmartspace = split[0];
 			this.userEmail= split[1];	
 		}
 	}
+	
+//	@Override
+//	public void setKey(String key) {		
+//		String[] split = key.split("=");
+//		if(split!=null & split.length==2) {
+//			this.userSmartspace = split[0];
+//			this.userEmail= split[1];	
+//		}
+//	}
 
 	@Override
 	public String toString() {
 		return "UserEntity [userSmartspace=" + userSmartspace + ", userEmail=" + userEmail + ", username=" + username
 				+ ", avatar=" + avatar + ", role=" + role + ", points=" + points + "]";
 	}
-	
-	
-	
 }

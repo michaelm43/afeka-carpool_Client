@@ -4,20 +4,16 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
-import smartspace.dao.rdb.MapToJsonConverter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name="ACTIONS")
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
+@Document(collection="ACTIONS")
 public class ActionEntity implements SmartspaceEntity<String> {
 
 	private String actionSmartspace;
@@ -29,6 +25,7 @@ public class ActionEntity implements SmartspaceEntity<String> {
 	private String actionType;
 	private Date creationTimestamp;
 	private Map<String, Object> moreAttributes;
+	private String key;
 	
 	
 	public ActionEntity() {
@@ -69,7 +66,8 @@ public class ActionEntity implements SmartspaceEntity<String> {
 		this.moreAttributes = moreAttributes;
 	}
 
-	@Transient
+//	@Transient
+	@JsonIgnore
 	public String getActionSmartspace() {
 		return actionSmartspace;
 	}
@@ -78,7 +76,8 @@ public class ActionEntity implements SmartspaceEntity<String> {
 		this.actionSmartspace = actionSmartspace;
 	}
 	
-	@Transient
+//	@Transient
+	@JsonIgnore
 	public String getActionId() {
 		return actionId;
 	}
@@ -136,8 +135,8 @@ public class ActionEntity implements SmartspaceEntity<String> {
 		this.creationTimestamp = creationTimestamp;
 	}
 
-	@Lob
-	@Convert(converter=MapToJsonConverter.class)
+//	@Lob
+//	@Convert(converter=MapToJsonConverter.class)
 	public Map<String, Object> getMoreAttributes() {
 		return moreAttributes;
 	}
@@ -148,13 +147,13 @@ public class ActionEntity implements SmartspaceEntity<String> {
 
 	@Override
 	@Id
-	@Column(name="ID")
 	public String getKey() {
 		return this.actionSmartspace + "=" + this.actionId;
 	}
 
 	@Override
 	public void setKey(String key) {
+		this.key = key;
 		String[] split = key.split("=");
 		if(split!=null & split.length==2) {
 			this.actionSmartspace = split[0];
