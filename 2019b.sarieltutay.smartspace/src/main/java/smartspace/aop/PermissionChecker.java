@@ -29,7 +29,7 @@ public class PermissionChecker {
 	
 	
 	@Around("@annotation(smartspace.aop.CheckRoleOfUser) && args(userSmartspace,userEmail,role,..)")
-	public void checkRoll(ProceedingJoinPoint pjp, String userSmartspace, String userEmail, UserRole role) throws Throwable {
+	public Object checkRoll(ProceedingJoinPoint pjp, String userSmartspace, String userEmail, UserRole role) throws Throwable {
 		// before
 		String method = pjp.getSignature().getName();
 		String fullyQualifiedClassName = pjp.getTarget().getClass().getName();
@@ -43,7 +43,7 @@ public class PermissionChecker {
 				
 		logger.debug("********* " + fullyQualifiedClassName + "." + method + "(" + userSmartspace + ","+ userEmail + ","+ role + ",.....)" + role);
 		
-		pjp.proceed(args);	
+		return pjp.proceed(args);	
 	}	
 }
 

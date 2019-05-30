@@ -20,7 +20,6 @@ public class RdbActionDao implements EnhancedActionDao {
 
 	public RdbActionDao() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@Autowired
@@ -40,6 +39,7 @@ public class RdbActionDao implements EnhancedActionDao {
 					actionEntity.setKey(actionEntity.getActionSmartspace() + "=" + nextId.getId());
 					this.genericIdGeneratorCrud.delete(nextId);
 					if (actionCrud != null) {
+						System.err.println(actionEntity.getKey());
 						if (!this.actionCrud.existsById(actionEntity.getKey())) {
 							ActionEntity rv = this.actionCrud.save(actionEntity);
 							return rv;

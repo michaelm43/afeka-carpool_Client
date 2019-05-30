@@ -35,7 +35,7 @@ public class ActionsUserServiceImpl implements ActionsUserService{
 	@Override
 	@Transactional
 	@CheckRoleOfUser
-	public Map<String,Object> invokeAction(String smartspace,String email ,UserRole role,ActionEntity action) {
+	public ActionEntity invokeAction(String smartspace,String email ,UserRole role,ActionEntity action) {
 		if(role == UserRole.PLAYER) {
 		Optional<UserEntity> user = this.userDao.readById(smartspace + "=" + email);
 		if(user.isPresent()) {
@@ -44,13 +44,12 @@ public class ActionsUserServiceImpl implements ActionsUserService{
 		}
 		else
 			throw new RuntimeException("The user isn't excist");
-
-			switch(action.getActionType()) {
-			case  "echo": 
+		String type = action.getActionType();
+			switch(type) {
+			case "echo": 
 				action.setCreationTimestamp(new Date());
 				try {
-//					return this.jackson.writeValueAsString(action);
-					return convertToMap(actionDao.create(action));
+					return this.actionDao.create(action);
 				} catch (Exception e) {
 					new RuntimeException(e);
 				}
@@ -64,14 +63,8 @@ public class ActionsUserServiceImpl implements ActionsUserService{
 		}
 	}
 	
-
-//	public Map<String,Object> convertToMap(ActionEntity action) throws JsonProcessingException{
-//		Map<String,Object> map;
-//		String string this.jackson.writeValue(action);
-//		return this.jackson.readValue(,Sap.class);
-//	}
 	
-	public Map<String,Object> convertToMap(ActionEntity action){
+/*	public Map<String,Object> convertToMap(ActionEntity action){
 		Map<String,Object> actionMap = new HashMap<String, Object>();
 		Map<String,String> keyMap = new HashMap<String, String>();
 		Map<String,String> elementMap = new HashMap<String, String>();
@@ -95,5 +88,5 @@ public class ActionsUserServiceImpl implements ActionsUserService{
 		actionMap.put("properties",action.getMoreAttributes());
 		
 		return actionMap;
-	}
+	}*/
 }

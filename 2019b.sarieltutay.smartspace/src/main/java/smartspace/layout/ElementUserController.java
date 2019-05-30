@@ -30,7 +30,7 @@ public class ElementUserController {
 			method=RequestMethod.POST,
 			consumes=MediaType.APPLICATION_JSON_VALUE,
 			produces=MediaType.APPLICATION_JSON_VALUE)
-	public ElementBoundary newElement (
+	public ElementBoundary newElement(
 			@RequestBody ElementBoundary element, 
 			@PathVariable("managerSmartspace") String userSmartspace, 
 			@PathVariable("managerEmail") String userEmail) {		
