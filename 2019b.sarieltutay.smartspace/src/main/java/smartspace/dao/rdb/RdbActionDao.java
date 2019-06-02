@@ -19,7 +19,6 @@ public class RdbActionDao implements EnhancedActionDao {
 
 	public RdbActionDao() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@Autowired
@@ -38,9 +37,9 @@ public class RdbActionDao implements EnhancedActionDao {
 					return rv;
 				} else
 					throw new RuntimeException("action already exists with key: " + actionEntity.getKey());
-			} else
+			} 
+			else
 				throw new RuntimeException("actionCrud is null");
-
 		} else
 			throw new RuntimeException("action is null");
 	}

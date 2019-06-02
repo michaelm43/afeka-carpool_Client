@@ -45,7 +45,7 @@ public class ActionsUserServiceImpl implements ActionsUserService {
 	@Override
 	@Transactional
 	@CheckRoleOfUser
-	public Map<String, Object> invokeAction(String smartspace, String email, UserRole role, ActionEntity action) {
+	public ActionEntity invokeAction(String smartspace, String email, UserRole role, ActionEntity action) {
 		if (role == UserRole.PLAYER) {
 			Optional<UserEntity> user = this.userDao.readById(smartspace + "=" + email);
 			if (user.isPresent()) {
@@ -56,20 +56,19 @@ public class ActionsUserServiceImpl implements ActionsUserService {
 
 			System.out.println(action.getActionType());
 			System.out.println("*****");
-			switch (action.getActionType()) {
+			String type = action.getActionType();
+			switch(type) {
 			case "echo":
 				action.setCreationTimestamp(new Date());
 				try {
-					return convertToMap(
-							actionDao.createWithId(action, sequenceDao.newEntity(ActionEntity.SEQUENCE_NAME)));
+					return actionDao.createWithId(action, sequenceDao.newEntity(ActionEntity.SEQUENCE_NAME));
 				} catch (Exception e) {
 					new RuntimeException(e);
 				}
 				break;
 			case "to-afeka":
 				try {
-					return convertToMap(
-							actionDao.createWithId(action, sequenceDao.newEntity(ActionEntity.SEQUENCE_NAME)));
+					return actionDao.createWithId(action, sequenceDao.newEntity(ActionEntity.SEQUENCE_NAME));
 				} catch (Exception e) {
 					new RuntimeException(e);
 				}
@@ -77,8 +76,7 @@ public class ActionsUserServiceImpl implements ActionsUserService {
 
 			case "from-afeka":
 				try {
-					return convertToMap(
-							actionDao.createWithId(action, sequenceDao.newEntity(ActionEntity.SEQUENCE_NAME)));
+					return actionDao.createWithId(action, sequenceDao.newEntity(ActionEntity.SEQUENCE_NAME));
 				} catch (Exception e) {
 					new RuntimeException(e);
 				}
@@ -96,7 +94,7 @@ public class ActionsUserServiceImpl implements ActionsUserService {
 						drivers.put(element.get().getCreatorEmail(), "In station");
 						element.get().getMoreAttributes().put("drivers", drivers);
 						this.elementDao.update(element.get());
-						return convertToMap(element.get());
+						//return element.get();
 					}
 					return null;
 				} catch (Exception e) {
@@ -116,7 +114,7 @@ public class ActionsUserServiceImpl implements ActionsUserService {
 							element.get().getMoreAttributes().put("drivers", drivers);
 							this.elementDao.update(element.get());
 						}
-						return convertToMap(element.get());
+						//return element.get();
 					}
 					return null;
 				} catch (Exception e) {
@@ -142,7 +140,8 @@ public class ActionsUserServiceImpl implements ActionsUserService {
 						}
 					}
 					if (maxElement != null)
-						return convertToMap(maxElement);
+						//return maxElement;
+						return null;
 					else
 						return null;
 				} catch (Exception e) {

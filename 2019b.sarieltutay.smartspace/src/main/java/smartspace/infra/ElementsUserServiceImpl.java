@@ -1,6 +1,7 @@
 package smartspace.infra;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -12,6 +13,7 @@ import smartspace.aop.CheckRoleOfUser;
 import smartspace.dao.EnhancedElementDao;
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.ElementEntity;
+
 import smartspace.data.UserRole;
 
 @Service
@@ -32,6 +34,7 @@ public class ElementsUserServiceImpl implements ElementsUserService {
 		if (role == UserRole.MANAGER) {
 			if (valiadate(element)) {
 				//do delete//
+				element.setCreationTimestamp(new Date());
 				this.elementDao.createImportAction(element);
 			} else
 				throw new RuntimeException("invalid element");
@@ -77,17 +80,15 @@ public class ElementsUserServiceImpl implements ElementsUserService {
 			String elementId) {
 
 		if (role == UserRole.MANAGER) {
-			return this.elementDao.readById(elementId)
+			return this.elementDao.readById(elementSmartspace+"="+elementId)
 					.orElseThrow(() -> new RuntimeException("There is no element with the given key"));
 		} else if (role == UserRole.PLAYER) {
-			this.elementDao.readById(elementId).filter(ElementEntity::isExpired)
-					.orElseThrow(() -> new RuntimeException("There is no element with the given key"));
+			return this.elementDao.readById(elementId).filter(ElementEntity::isExpired)
+					.orElseThrow(() -> new RuntimeException("There is no element with the given key or the element is expired"));
 		} else {
 			throw new RuntimeException(
 					"The URl isn't match for manager or player. use another user or URL that match admin user");
 		}
-
-		throw new RuntimeException("The element is expired");
 	}
 
 	@Override
