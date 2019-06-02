@@ -26,6 +26,7 @@ public class ActionEntity implements SmartspaceEntity<String> {
 	private Date creationTimestamp;
 	private Map<String, Object> moreAttributes;
 	private String key;
+	public static final String SEQUENCE_NAME = "actions_sequence";
 	
 	
 	public ActionEntity() {
@@ -168,5 +169,9 @@ public class ActionEntity implements SmartspaceEntity<String> {
 				+ ", playerEmail=" + playerEmail + ", actionType=" + actionType + ", creationTimestamp="
 				+ creationTimestamp + ", moreAttributes=" + moreAttributes + "]";
 	}
-	
+
+	@JsonIgnore
+	public static String getSequenceName() {
+		return SEQUENCE_NAME;
+	}
 }

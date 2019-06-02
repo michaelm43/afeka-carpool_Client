@@ -18,6 +18,7 @@ public class UserEntity implements SmartspaceEntity<String> {
 	private UserRole role;
 	private long points;
 	private String key;
+	public static final String SEQUENCE_NAME = "users_sequence";
 	
 	
 	public UserEntity(String userSmartspace, String userEmail, String username, String avatar, UserRole role,
@@ -136,19 +137,15 @@ public class UserEntity implements SmartspaceEntity<String> {
 			this.userEmail= split[1];	
 		}
 	}
-	
-//	@Override
-//	public void setKey(String key) {		
-//		String[] split = key.split("=");
-//		if(split!=null & split.length==2) {
-//			this.userSmartspace = split[0];
-//			this.userEmail= split[1];	
-//		}
-//	}
 
 	@Override
 	public String toString() {
 		return "UserEntity [userSmartspace=" + userSmartspace + ", userEmail=" + userEmail + ", username=" + username
 				+ ", avatar=" + avatar + ", role=" + role + ", points=" + points + "]";
+	}
+	
+	@JsonIgnore
+	public static String getSequenceName() {
+		return SEQUENCE_NAME;
 	}
 }

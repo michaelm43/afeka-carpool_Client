@@ -15,7 +15,6 @@ import smartspace.data.ActionEntity;
 @Repository
 public class RdbActionDao implements EnhancedActionDao {
 
-	private GenericIdGeneratorCrud genericIdGeneratorCrud;
 	private ActionCrud actionCrud;
 
 	public RdbActionDao() {
@@ -24,10 +23,9 @@ public class RdbActionDao implements EnhancedActionDao {
 	}
 
 	@Autowired
-	public RdbActionDao(ActionCrud actionCrud, GenericIdGeneratorCrud genericIdGeneratorCrud) {
+	public RdbActionDao(ActionCrud actionCrud) {
 		super();
 		this.actionCrud = actionCrud;
-		this.genericIdGeneratorCrud = genericIdGeneratorCrud;
 	}
 
 	@Override
@@ -36,24 +34,15 @@ public class RdbActionDao implements EnhancedActionDao {
 		if (actionEntity != null) {
 			if (this.actionCrud != null) {
 				if (!this.actionCrud.existsById(actionEntity.getKey())) {
-					GenericIdGenerator nextId = this.genericIdGeneratorCrud.save(new GenericIdGenerator());
-					actionEntity.setKey(actionEntity.getActionSmartspace() + "=" + nextId.getId());
-					this.genericIdGeneratorCrud.delete(nextId);
-					if (actionCrud != null) {
-						if (!this.actionCrud.existsById(actionEntity.getKey())) {
-							ActionEntity rv = this.actionCrud.save(actionEntity);
-							return rv;
-						} else
-							throw new RuntimeException("action already exists with key: " + actionEntity.getKey());
-					}
-				}
-			}
-			else
+					ActionEntity rv = this.actionCrud.save(actionEntity);
+					return rv;
+				} else
+					throw new RuntimeException("action already exists with key: " + actionEntity.getKey());
+			} else
 				throw new RuntimeException("actionCrud is null");
-				
+
 		} else
 			throw new RuntimeException("action is null");
-		return null;
 	}
 
 	@Override
@@ -94,6 +83,12 @@ public class RdbActionDao implements EnhancedActionDao {
 	@Transactional(readOnly = true)
 	public List<ActionEntity> readMessageWithSmartspaceContaining(String smartspace, int size, int page) {
 		return this.actionCrud.findAllByActionSmartspaceLike("%" + smartspace + "%", PageRequest.of(page, size));
+	}
+
+	@Override
+	public ActionEntity createWithId(ActionEntity actionEntity, Long id) {
+		actionEntity.setKey(actionEntity.getActionSmartspace() + "=" + id);
+		return this.create(actionEntity);
 	}
 
 }

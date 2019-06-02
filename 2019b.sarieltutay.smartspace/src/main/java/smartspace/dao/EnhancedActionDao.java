@@ -9,6 +9,7 @@ public interface EnhancedActionDao extends ActionDao{
 	public List<ActionEntity> readAll(String sortBy, int size, int page);
 	public List<ActionEntity> readMessageWithSmartspaceContaining (String smartspace, int size, int page);
 	public ActionEntity createImportAction(ActionEntity entity);
+	public ActionEntity createWithId(ActionEntity actionEntity, Long id);
 }
 
 
