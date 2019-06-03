@@ -31,17 +31,14 @@ public class RdbElementDao implements EnhancedElementDao<String> {
 	public ElementEntity create(ElementEntity elementEntity) {
 		if (elementEntity != null) {
 			if (!this.elementCrud.existsById(elementEntity.getKey())) {
-				GenericIdGenerator nextId = this.genericIdGeneratorCrud.save(new GenericIdGenerator());
-				elementEntity.setKey(elementEntity.getElementSmartspace() + "=" + nextId.getId());
-				this.genericIdGeneratorCrud.delete(nextId);
 				if (elementCrud != null) {
 					if (!this.elementCrud.existsById(elementEntity.getKey())) {
 						ElementEntity rv = this.elementCrud.save(elementEntity);
 						return rv;
-					} else {
+					} else
 						throw new RuntimeException("element already exists with key: " + elementEntity.getKey());
-					}
-				}
+				} else
+					throw new RuntimeException("elementactionCrud is null");
 			}
 		} else
 			throw new RuntimeException("element cant be null");
@@ -53,6 +50,13 @@ public class RdbElementDao implements EnhancedElementDao<String> {
 	public Optional<ElementEntity> readById(String elementKey) {
 		// SQL: SELECT
 		return this.elementCrud.findById(elementKey);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Optional<ElementEntity> readByIdNotExpired(String elementKey) {
+		// SQL: SELECT
+		return this.elementCrud.findByKeyAndExpired(elementKey, false);
 	}
 
 	@Override
@@ -96,8 +100,8 @@ public class RdbElementDao implements EnhancedElementDao<String> {
 	@Override
 	@Transactional
 	public void deleteByKey(String elementKey) {
-		if(!elementKey.equals(null))
-			if(this.elementCrud.existsById(elementKey))
+		if (!elementKey.equals(null))
+			if (this.elementCrud.existsById(elementKey))
 				this.elementCrud.deleteById(elementKey);
 	}
 
@@ -112,30 +116,21 @@ public class RdbElementDao implements EnhancedElementDao<String> {
 	}
 
 	@Override
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public List<ElementEntity> readAll(int size, int page) {
-		return this.elementCrud
-				.findAll(PageRequest.of(page, size))
-				.getContent();
+		return this.elementCrud.findAll(PageRequest.of(page, size)).getContent();
 	}
 
 	@Override
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public List<ElementEntity> readAll(String sortBy, int size, int page) {
-		return this.elementCrud
-				.findAll(PageRequest.of(
-						page, size, 
-						Direction.ASC, sortBy))
-				.getContent();
+		return this.elementCrud.findAll(PageRequest.of(page, size, Direction.ASC, sortBy)).getContent();
 	}
 
 	@Override
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public List<ElementEntity> readMessageWithSmartspaceContaining(String smartspace, int size, int page) {
-		return this.elementCrud
-				.findAllByNameLike(
-						"%" + smartspace + "%",
-						PageRequest.of(page, size));
+		return this.elementCrud.findAllByNameLike("%" + smartspace + "%", PageRequest.of(page, size));
 	}
 
 	@Override
@@ -151,14 +146,14 @@ public class RdbElementDao implements EnhancedElementDao<String> {
 
 	@Override
 	public List<ElementEntity> readAllUsingLocation(int x, int y, int distance, int size, int page) {
-		return this.elementCrud.findAllByLocation_XBetweenAndLocation_YBetween(x-distance, x+distance,
-				y-distance, y+distance, PageRequest.of(page, size));
+		return this.elementCrud.findAllByLocation_XBetweenAndLocation_YBetween(x - distance, x + distance, y - distance,
+				y + distance, PageRequest.of(page, size));
 	}
 
 	@Override
 	public List<ElementEntity> readAllUsingLocationNotExpired(int x, int y, int distance, int size, int page) {
-		return this.elementCrud.findAllByExpiredAndLocation_XBetweenAndLocation_YBetween(false, x-distance, x+distance, 
-				y-distance, y+distance, PageRequest.of(page, size));
+		return this.elementCrud.findAllByExpiredAndLocation_XBetweenAndLocation_YBetween(false, x - distance,
+				x + distance, y - distance, y + distance, PageRequest.of(page, size));
 	}
 
 	@Override
@@ -179,6 +174,13 @@ public class RdbElementDao implements EnhancedElementDao<String> {
 	@Override
 	public List<ElementEntity> readAllUsingTypeNotExpired(String type, int size, int page) {
 		return this.elementCrud.findAllByExpiredAndType(false, type, PageRequest.of(page, size));
+	}
+
+	@Override
+	@Transactional
+	public ElementEntity createWithId(ElementEntity elementEntity, Long id) {
+		elementEntity.setKey(elementEntity.getElementSmartspace() + "=" + id);
+		return this.create(elementEntity);
 	}
 
 }

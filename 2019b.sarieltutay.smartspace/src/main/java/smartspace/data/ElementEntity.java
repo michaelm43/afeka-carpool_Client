@@ -26,7 +26,7 @@ public class ElementEntity implements SmartspaceEntity<String> {
 	private String creatorEmail;
 	private Map<String, Object> moreAttributes;
 	private String key;
-	public static final String SEQUENCE_NAME = "elements_sequence";
+	private static final String SEQUENCE_NAME = "elements_sequence";
 
 	public ElementEntity() {
 		this.creationTimestamp = new Date();

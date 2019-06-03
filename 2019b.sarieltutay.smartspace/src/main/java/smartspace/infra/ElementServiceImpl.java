@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import smartspace.dao.EnhancedElementDao;
 import smartspace.dao.EnhancedUserDao;
+import smartspace.dao.SequenceDao;
 import smartspace.data.ElementEntity;
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
@@ -21,12 +22,14 @@ public class ElementServiceImpl implements ElementsService {
 	private EnhancedElementDao<String> elementDao;
 	private EnhancedUserDao<String> userDao;
 	private String smartspace;
+	private SequenceDao sequenceDao;
 
 	@Autowired
-	public ElementServiceImpl(EnhancedElementDao<String> elementDao, EnhancedUserDao<String> userDao) {
+	public ElementServiceImpl(EnhancedElementDao<String> elementDao, EnhancedUserDao<String> userDao, SequenceDao sequenceDao) {
 		super();
 		this.elementDao = elementDao;
 		this.userDao = userDao;
+		this.sequenceDao = sequenceDao;
 	}
 
 	@Value("${smartspace.name}")
@@ -46,7 +49,7 @@ public class ElementServiceImpl implements ElementsService {
 			if (valiadate(element)) {
 				if (!(this.smartspace.equals(element.getElementSmartspace()))) {
 
-					this.elementDao.createImportAction(element);//??
+					this.elementDao.createWithId(element, sequenceDao.newEntity(ElementEntity.getSequenceName()));
 					elements_entities.add(element);
 				} else
 					throw new RuntimeException("element smartspace must be different then the local project");

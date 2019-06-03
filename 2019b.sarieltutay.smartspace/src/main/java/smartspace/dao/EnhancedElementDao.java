@@ -1,6 +1,7 @@
 package smartspace.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import smartspace.data.ElementEntity;
 
@@ -16,4 +17,6 @@ public interface EnhancedElementDao<Key> extends ElementDao<Key> {
 	public List<ElementEntity> readAllUsingNameNotExpired(String name, int size, int page);
 	public List<ElementEntity> readAllUsingType(String type, int size, int page);
 	public List<ElementEntity> readAllUsingTypeNotExpired(String type, int size, int page);
+	public Optional<ElementEntity> readByIdNotExpired(String elementKey);
+	public ElementEntity createWithId(ElementEntity elementEntity, Long id);
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import smartspace.dao.EnhancedActionDao;
 import smartspace.dao.EnhancedElementDao;
 import smartspace.dao.EnhancedUserDao;
+import smartspace.dao.SequenceDao;
 import smartspace.data.ActionEntity;
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
@@ -23,13 +24,15 @@ public class ActionsServiceImpl implements ActionsService {
 	private EnhancedUserDao<String> userDao;
 	private EnhancedElementDao<String> elementDao;
 	private String smartspace;
+	private SequenceDao sequenceDao;
 	
 	@Autowired	
-	public ActionsServiceImpl(EnhancedActionDao actionDao, EnhancedUserDao<String> userDao, EnhancedElementDao<String> elementDao) {
+	public ActionsServiceImpl(EnhancedActionDao actionDao, EnhancedUserDao<String> userDao, EnhancedElementDao<String> elementDao, SequenceDao sequenceDao) {
 		super();
 		this.actionDao = actionDao;
 		this.userDao = userDao;
 		this.elementDao = elementDao;
+		this.sequenceDao = sequenceDao;
 	}
 	
 	@Value("${smartspace.name}")
@@ -59,7 +62,7 @@ public class ActionsServiceImpl implements ActionsService {
 						throw new RuntimeException("action element must be imported in advance");	
 				}
 			}
-			this.actionDao.createImportAction(action);
+			this.actionDao.createWithId(action, sequenceDao.newEntity(ActionEntity.getSequenceName()));
 			actions_entities.add(action);
 		}
 		

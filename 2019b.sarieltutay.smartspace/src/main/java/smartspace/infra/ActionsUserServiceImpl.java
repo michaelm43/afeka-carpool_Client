@@ -124,29 +124,43 @@ public class ActionsUserServiceImpl implements ActionsUserService {
 					new RuntimeException(e);
 				}
 				break;
-
-			case "max":
+				
+			case "transfer":
 				action.setCreationTimestamp(new Date());
 				try {
-					List<ElementEntity> elements = this.elementDao.readAll();
-					ElementEntity maxElement = null;
-					int max = -1;
-					for (ElementEntity element : elements) {
-						int counter = 0;
-						Map<String, Object> drivers = (Map<String, Object>) element.getMoreAttributes().get("drivers");
-						if (drivers != null) {
-							for (String driver : drivers.keySet())
-								counter++;
+					Optional<UserEntity> from = this.userDao
+							.readById(action.getPlayerSmartspace() + "=" + action.getPlayerEmail());
+					String smart = (String) action.getMoreAttributes().get("smartspace");
+					String em = (String) action.getMoreAttributes().get("email");
+					long points = 100;
+					Optional<UserEntity> to = this.userDao.readById(smart + "=" + em);
+					if (to.isPresent()) {
+						if(from.get().getPoints() >= points) {
+							from.get().setPoints(from.get().getPoints()-points);
+							to.get().setPoints(to.get().getPoints()+points);
+							userDao.update(from.get());
+							userDao.update(to.get());
+							return convertToMap(to.get());
 						}
-						if (counter > max) {
-							max = counter;
-							maxElement = element;
-						}
+						throw new RuntimeException("the user doesn't have enough points");
 					}
-					if (maxElement != null)
-						return convertToMap(maxElement);
-					else
-						throw new RuntimeException("the element isn't exist");
+					throw new RuntimeException("the user doesn't exist");
+				} catch (Exception e) {
+					new RuntimeException(e);
+				}
+				break;
+				
+			case "in-station":
+				action.setCreationTimestamp(new Date());
+				try {
+					Optional<ElementEntity> element = this.elementDao
+							.readById(action.getElementSmartspace() + "=" + action.getElementId());
+					if (element.isPresent()) {
+						Map<String, Object> drivers = (Map<String, Object>) element.get().getMoreAttributes()
+								.get("drivers");
+						return drivers;
+					}
+					throw new RuntimeException("the element doesn't exist");
 				} catch (Exception e) {
 					new RuntimeException(e);
 				}
@@ -211,5 +225,21 @@ public class ActionsUserServiceImpl implements ActionsUserService {
 		elementMap.put("elementProperties", element.getMoreAttributes());
 
 		return elementMap;
+	}
+	
+	public Map<String, Object> convertToMap(UserEntity user) {
+		Map<String, Object> userMap = new HashMap<String, Object>();
+		Map<String, String> keyMap = new HashMap<String, String>();
+
+		keyMap.put("smartspace", user.getUserSmartspace());
+		keyMap.put("email", user.getUserEmail());
+
+		userMap.put("key", keyMap);
+		userMap.put("role", user.getRole());
+		userMap.put("username", user.getUsername());
+		userMap.put("avatar", user.getAvatar());
+		userMap.put("points", user.getPoints());
+
+		return userMap;
 	}
 }

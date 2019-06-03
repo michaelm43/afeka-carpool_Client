@@ -1,6 +1,7 @@
 package smartspace.dao.rdb;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
@@ -38,4 +39,13 @@ public interface ElementCrud extends PagingAndSortingRepository<ElementEntity, S
 	
 	public List<ElementEntity> findAllByExpiredAndType(@Param("expired") boolean expired,
 			@Param("type") String type, Pageable pageable);
+
+	public Optional<ElementEntity> findByKeyAndExpired(@Param("key") String key, @Param("expired") boolean expired);
+	
+	
+
 }
+
+
+
+

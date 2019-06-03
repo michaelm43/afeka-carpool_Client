@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import smartspace.aop.CheckRoleOfUser;
 import smartspace.dao.EnhancedElementDao;
 import smartspace.dao.EnhancedUserDao;
+import smartspace.dao.SequenceDao;
 import smartspace.data.ElementEntity;
 
 import smartspace.data.UserRole;
@@ -20,11 +21,13 @@ import smartspace.data.UserRole;
 public class ElementsUserServiceImpl implements ElementsUserService {
 
 	private EnhancedElementDao<String> elementDao;
+	private SequenceDao sequenceDao;
 
 	@Autowired
-	public ElementsUserServiceImpl(EnhancedElementDao<String> elementDao, EnhancedUserDao<String> userDao) {
+	public ElementsUserServiceImpl(EnhancedElementDao<String> elementDao, SequenceDao sequenceDao) {
 		super();
 		this.elementDao = elementDao;
+		this.sequenceDao = sequenceDao;
 	}
 
 	@Override
@@ -35,7 +38,7 @@ public class ElementsUserServiceImpl implements ElementsUserService {
 			if (valiadate(element)) {
 				//do delete//
 				element.setCreationTimestamp(new Date());
-				this.elementDao.createImportAction(element);
+				this.elementDao.createWithId(element, this.sequenceDao.newEntity(ElementEntity.getSequenceName()));
 			} else
 				throw new RuntimeException("invalid element");
 		}
@@ -83,7 +86,7 @@ public class ElementsUserServiceImpl implements ElementsUserService {
 			return this.elementDao.readById(elementSmartspace+"="+elementId)
 					.orElseThrow(() -> new RuntimeException("There is no element with the given key"));
 		} else if (role == UserRole.PLAYER) {
-			return this.elementDao.readById(elementId).filter(ElementEntity::isExpired)
+			return this.elementDao.readByIdNotExpired(elementSmartspace+"="+elementId)
 					.orElseThrow(() -> new RuntimeException("There is no element with the given key or the element is expired"));
 		} else {
 			throw new RuntimeException(

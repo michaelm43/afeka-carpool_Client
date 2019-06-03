@@ -32,13 +32,15 @@ public class RdbActionDao implements EnhancedActionDao {
 	public ActionEntity create(ActionEntity actionEntity) {
 		if (actionEntity != null) {
 			if (this.actionCrud != null) {
-				if (!this.actionCrud.existsById(actionEntity.getKey())) {
-					ActionEntity rv = this.actionCrud.save(actionEntity);
-					return rv;
+				if (valiadate(actionEntity)) {
+					if (!this.actionCrud.existsById(actionEntity.getKey())) {
+						ActionEntity rv = this.actionCrud.save(actionEntity);
+						return rv;
+					} else
+						throw new RuntimeException("action already exists with key: " + actionEntity.getKey());
 				} else
-					throw new RuntimeException("action already exists with key: " + actionEntity.getKey());
-			} 
-			else
+					throw new RuntimeException("action parameters are null");
+			} else
 				throw new RuntimeException("actionCrud is null");
 		} else
 			throw new RuntimeException("action is null");
@@ -89,5 +91,16 @@ public class RdbActionDao implements EnhancedActionDao {
 	public ActionEntity createWithId(ActionEntity actionEntity, Long id) {
 		actionEntity.setKey(actionEntity.getActionSmartspace() + "=" + id);
 		return this.create(actionEntity);
+	}
+
+	private boolean valiadate(ActionEntity entity) {
+		return entity != null && entity.getActionId() != null && !entity.getActionId().trim().isEmpty()
+				&& entity.getActionSmartspace() != null && !entity.getActionSmartspace().trim().isEmpty()
+				&& entity.getActionType() != null && !entity.getActionType().trim().isEmpty()
+				&& entity.getPlayerSmartspace() != null && !entity.getPlayerSmartspace().trim().isEmpty()
+				&& entity.getPlayerEmail() != null && !entity.getPlayerEmail().trim().isEmpty()
+				&& entity.getElementId() != null && !entity.getElementId().trim().isEmpty()
+				&& entity.getElementSmartspace() != null && !entity.getElementSmartspace().trim().isEmpty()
+				&& entity.getMoreAttributes() != null;
 	}
 }
