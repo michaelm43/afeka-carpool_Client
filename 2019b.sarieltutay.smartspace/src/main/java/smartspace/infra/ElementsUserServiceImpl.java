@@ -125,7 +125,7 @@ public class ElementsUserServiceImpl implements ElementsUserService {
 	@CheckRoleOfUser
 	public Collection<ElementEntity> getElementsUsingPaginationOfName(String userSmartspace, String userEmail, UserRole role,
 			String name, int size, int page) {
-
+		
 		if (role == UserRole.MANAGER) {
 			return this.elementDao.readAllUsingName(name, size, page);
 		} else if (role == UserRole.PLAYER) {

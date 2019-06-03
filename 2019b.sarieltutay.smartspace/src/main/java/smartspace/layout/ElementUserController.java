@@ -84,9 +84,8 @@ public class ElementUserController {
 				.toArray(new ElementBoundary[0]);
 	}
 	
-//	?search=location&x={x}&y={y}&distance={distance}&page={page}&size={size}
 	@RequestMapping(
-			path="/smartspace/elements/{userSmartspace}/{userEmail}?search=location",
+			path="/smartspace/elements/{userSmartspace}/{userEmail}/search=location",
 			method=RequestMethod.GET,
 			produces=MediaType.APPLICATION_JSON_VALUE)
 	public ElementBoundary[] getElementsUsingPaginationOfLocation (
@@ -106,9 +105,8 @@ public class ElementUserController {
 				.toArray(new ElementBoundary[0]);
 	}
 	
-//	?search=name&value={name}&page={page}&size={size}
 	@RequestMapping(
-			path="/smartspace/elements/{userSmartspace}/{userEmail}?search=name",
+			path="/smartspace/elements/{userSmartspace}/{userEmail}/search=name",
 			method=RequestMethod.GET,
 			produces=MediaType.APPLICATION_JSON_VALUE)
 	public ElementBoundary[] getElementsUsingPaginationOfSpecifiedName (
@@ -125,9 +123,9 @@ public class ElementUserController {
 				.collect(Collectors.toList())
 				.toArray(new ElementBoundary[0]);
 	}
-//	?search=type&value={type}&page={page}&size={size}
+
 	@RequestMapping(
-			path="/smartspace/elements/{userSmartspace}/{userEmail}?search=type",
+			path="/smartspace/elements/{userSmartspace}/{userEmail}/search=type",
 			method=RequestMethod.GET,
 			produces=MediaType.APPLICATION_JSON_VALUE)
 	public ElementBoundary[] getElementsUsingPaginationOfSpecifiedType (
