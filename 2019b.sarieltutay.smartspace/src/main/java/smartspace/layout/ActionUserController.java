@@ -27,9 +27,9 @@ public class ActionUserController {
 			method=RequestMethod.POST,
 			consumes=MediaType.APPLICATION_JSON_VALUE,
 			produces=MediaType.APPLICATION_JSON_VALUE)
-	public ActionBoundary invokeAnAction(
+	public Map<String,Object> invokeAnAction(
 			@RequestBody ActionBoundary action) {		
-		return new ActionBoundary(actionService.invokeAction(action.getPlayer().getSmartspace(),action.getPlayer().getEmail(), null,action.convertToEntity()));
+		return actionService.invokeAction(action.getPlayer().getSmartspace(),action.getPlayer().getEmail(), null,action.convertToEntity());
 	}
 }
 

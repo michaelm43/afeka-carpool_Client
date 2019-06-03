@@ -3,10 +3,12 @@ package smartspace.dao.rdb;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import smartspace.dao.SequenceDao;
 import smartspace.data.SequenceEntity;
 
+@Repository
 public class RdbSequenceDao implements SequenceDao {
 
 	private SequenceCrud sequenceCrud;

@@ -45,7 +45,7 @@ public class ActionsUserServiceImpl implements ActionsUserService {
 	@Override
 	@Transactional
 	@CheckRoleOfUser
-	public ActionEntity invokeAction(String smartspace, String email, UserRole role, ActionEntity action) {
+	public Map<String,Object> invokeAction(String smartspace, String email, UserRole role, ActionEntity action) {
 		if (role == UserRole.PLAYER) {
 			Optional<UserEntity> user = this.userDao.readById(smartspace + "=" + email);
 			if (user.isPresent()) {
@@ -55,32 +55,36 @@ public class ActionsUserServiceImpl implements ActionsUserService {
 				throw new RuntimeException("The user doesn't exist");
 
 			String type = action.getActionType();
+			String[] name = action.getPlayerEmail().split("@");
 			switch(type) {
 			case "echo":
 				action.setCreationTimestamp(new Date());
 				try {
-					return actionDao.createWithId(action, sequenceDao.newEntity(ActionEntity.SEQUENCE_NAME));
+					return convertToMap(actionDao.createWithId(action, sequenceDao.newEntity(ActionEntity.SEQUENCE_NAME)));
 				} catch (Exception e) {
 					new RuntimeException(e);
 				}
 				break;
 			case "to-afeka":
+				action.setCreationTimestamp(new Date());
 				try {
-					return actionDao.createWithId(action, sequenceDao.newEntity(ActionEntity.SEQUENCE_NAME));
+					return convertToMap(actionDao.createWithId(action, sequenceDao.newEntity(ActionEntity.SEQUENCE_NAME)));
 				} catch (Exception e) {
 					new RuntimeException(e);
 				}
 				break;
 
 			case "from-afeka":
+				action.setCreationTimestamp(new Date());
 				try {
-					return actionDao.createWithId(action, sequenceDao.newEntity(ActionEntity.SEQUENCE_NAME));
+					return convertToMap(actionDao.createWithId(action, sequenceDao.newEntity(ActionEntity.SEQUENCE_NAME)));
 				} catch (Exception e) {
 					new RuntimeException(e);
 				}
 				break;
 
 			case "check-in":
+				action.setCreationTimestamp(new Date());
 				try {
 					Optional<ElementEntity> element = this.elementDao
 							.readById(action.getElementSmartspace() + "=" + action.getElementId());
@@ -89,18 +93,19 @@ public class ActionsUserServiceImpl implements ActionsUserService {
 								.get("drivers");
 						if (drivers == null)
 							drivers = new HashMap<>();
-						drivers.put(element.get().getCreatorEmail(), "In station");
+						drivers.put(name[0], "In station");
 						element.get().getMoreAttributes().put("drivers", drivers);
 						this.elementDao.update(element.get());
-						//return element.get();
+						return convertToMap(element.get());
 					}
-					return null;
+					throw new RuntimeException("the element isn't exist");
 				} catch (Exception e) {
 					new RuntimeException(e);
 				}
 				break;
 
 			case "check-out":
+				action.setCreationTimestamp(new Date());
 				try {
 					Optional<ElementEntity> element = this.elementDao
 							.readById(action.getElementSmartspace() + "=" + action.getElementId());
@@ -108,19 +113,20 @@ public class ActionsUserServiceImpl implements ActionsUserService {
 						Map<String, Object> drivers = (Map<String, Object>) element.get().getMoreAttributes()
 								.get("drivers");
 						if (drivers != null) {
-							drivers.remove(element.get().getCreatorEmail());
+							drivers.remove(name[0]);
 							element.get().getMoreAttributes().put("drivers", drivers);
 							this.elementDao.update(element.get());
 						}
-						//return element.get();
+						return convertToMap(element.get());
 					}
-					return null;
+					throw new RuntimeException("the element isn't exist");
 				} catch (Exception e) {
 					new RuntimeException(e);
 				}
 				break;
 
 			case "max":
+				action.setCreationTimestamp(new Date());
 				try {
 					List<ElementEntity> elements = this.elementDao.readAll();
 					ElementEntity maxElement = null;
@@ -138,10 +144,9 @@ public class ActionsUserServiceImpl implements ActionsUserService {
 						}
 					}
 					if (maxElement != null)
-						//return maxElement;
-						return null;
+						return convertToMap(maxElement);
 					else
-						return null;
+						throw new RuntimeException("the element isn't exist");
 				} catch (Exception e) {
 					new RuntimeException(e);
 				}
