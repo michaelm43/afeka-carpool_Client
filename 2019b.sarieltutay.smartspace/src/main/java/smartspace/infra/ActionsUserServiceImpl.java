@@ -54,8 +54,6 @@ public class ActionsUserServiceImpl implements ActionsUserService {
 			} else
 				throw new RuntimeException("The user doesn't exist");
 
-			System.out.println(action.getActionType());
-			System.out.println("*****");
 			String type = action.getActionType();
 			switch(type) {
 			case "echo":

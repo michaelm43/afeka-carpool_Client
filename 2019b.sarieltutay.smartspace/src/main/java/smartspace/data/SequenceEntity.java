@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection="SEQUENCES")
 public class SequenceEntity implements SmartspaceEntity<String> {
 	
+	@Id
 	private String key;
 	private Long value;
 
@@ -33,7 +34,6 @@ public class SequenceEntity implements SmartspaceEntity<String> {
 	}
 
 	@Override
-	@Id
 	public String getKey() {
 		return this.key;
 	}

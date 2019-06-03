@@ -85,9 +85,9 @@ public class RdbActionDao implements EnhancedActionDao {
 	}
 
 	@Override
+	@Transactional
 	public ActionEntity createWithId(ActionEntity actionEntity, Long id) {
 		actionEntity.setKey(actionEntity.getActionSmartspace() + "=" + id);
 		return this.create(actionEntity);
 	}
-
 }
