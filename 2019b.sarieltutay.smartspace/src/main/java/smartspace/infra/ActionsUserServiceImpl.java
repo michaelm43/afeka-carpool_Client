@@ -96,6 +96,7 @@ public class ActionsUserServiceImpl implements ActionsUserService {
 						drivers.put(name[0], "In station");
 						element.get().getMoreAttributes().put("drivers", drivers);
 						this.elementDao.update(element.get());
+						this.actionDao.createWithId(action, sequenceDao.newEntity(ActionEntity.getSequenceName()));
 						return convertToMap(element.get());
 					}
 					throw new RuntimeException("the element isn't exist");
@@ -117,6 +118,7 @@ public class ActionsUserServiceImpl implements ActionsUserService {
 							element.get().getMoreAttributes().put("drivers", drivers);
 							this.elementDao.update(element.get());
 						}
+						this.actionDao.createWithId(action, sequenceDao.newEntity(ActionEntity.getSequenceName()));
 						return convertToMap(element.get());
 					}
 					throw new RuntimeException("the element isn't exist");
@@ -140,6 +142,7 @@ public class ActionsUserServiceImpl implements ActionsUserService {
 							to.get().setPoints(to.get().getPoints()+points);
 							userDao.update(from.get());
 							userDao.update(to.get());
+							this.actionDao.createWithId(action, sequenceDao.newEntity(ActionEntity.getSequenceName()));
 							return convertToMap(to.get());
 						}
 						throw new RuntimeException("the user doesn't have enough points");
@@ -158,6 +161,7 @@ public class ActionsUserServiceImpl implements ActionsUserService {
 					if (element.isPresent()) {
 						Map<String, Object> drivers = (Map<String, Object>) element.get().getMoreAttributes()
 								.get("drivers");
+						this.actionDao.createWithId(action, sequenceDao.newEntity(ActionEntity.getSequenceName()));
 						return drivers;
 					}
 					throw new RuntimeException("the element doesn't exist");
